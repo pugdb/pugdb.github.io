@@ -14,7 +14,7 @@ const STATIC_ASSETS = [
   // Fonts
   /\.(woff|woff2|ttf|otf|eot)$/,
   // SVG icons
-  /\/favicon\.svg$/,
+  /\/favicon\.png$/,
 ];
 
 // Images that should be cached with long TTL (1 year)
