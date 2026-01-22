@@ -20,6 +20,20 @@ const { title, description = 'A privacy-first, Rust-native key-value store desig
     <title>{title} | PugDB</title>
     <!-- Preconnect to CDN for faster terminal loading when needed -->
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    <!-- Service Worker for efficient caching -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js')
+            .then((registration) => {
+              console.log('SW registered:', registration);
+            })
+            .catch((error) => {
+              console.log('SW registration failed:', error);
+            });
+        });
+      }
+    </script>
   </head>
   <body>
     <div id="app">
