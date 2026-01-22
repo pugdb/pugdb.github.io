@@ -1,33 +1,58 @@
-# Astro Starter Kit: Minimal
+# PugDB Website
 
-```sh
-npm create astro@latest -- --template minimal
-```
+<div align="center">
+  <img src="public/logos/pug-logo.jpg" alt="PugDB Mascot" width="200" />
+  
+  # PugDB
+  
+  **Blazing-fast modular key-value store that adapts to anything.**
+  
+  [🌐 Visit Website](https://pugdb.github.io) | [📚 Documentation](https://pugdb.github.io/docs) | [💻 GitHub](https://github.com/pugdb)
+</div>
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## TL;DR
+
+**PugDB** (formerly F4KVS) is a **privacy-first, Rust-native key-value store** designed for high-performance applications. 
+
+- ⚡ **5.8x faster than PostgreSQL, 3.5x faster than ScyllaDB** (verified YCSB benchmarks)
+- 🦀 **Built in Rust** with async/await, memory safety, and modern patterns
+- 🧩 **Modular architecture** with pluggable storage engines (Memory, LSM-Tree, Partitioned)
+- ✅ **Production-ready core** with 5,454 tests passing and 63%+ code coverage
+- 🔒 **Privacy-first design** with encryption support, audit logging, and offline-first capabilities
+- 📊 **SQL query language** (beta) with window functions, JOINs, and transactions
+- 📈 **Sub-millisecond latency**: P50 0.029-0.072ms, P99 0.076-0.272ms
+
+Perfect for applications that need **blazing-fast performance**, **data sovereignty**, and **modular extensibility**.
+
+## About
+
+PugDB is a blazing-fast, modular key-value store built with Rust. It delivers exceptional performance with a modular architecture that adapts to your needs.
+
+### Key Features
+
+- ⚡ **Lightning Fast** - 5.8x faster than PostgreSQL, 3.5x faster than ScyllaDB
+- 🔌 **Infinitely Extensible** - Modular architecture with pluggable storage engines
+- 🧩 **Modular Design** - Choose the right components for your needs
 
 ## 🚀 Project Structure
 
-Inside of your Astro project, you'll see the following folders and files:
+This is the official website for PugDB, built with [Astro](https://astro.build).
 
 ```text
 /
-├── public/
+├── public/          # Static assets (images, logos, showcase)
 ├── src/
-│   └── pages/
-│       └── index.astro
+│   ├── components/  # Astro components
+│   ├── layouts/    # Page layouts
+│   ├── pages/      # Route pages
+│   ├── styles/     # Global styles
+│   └── config/     # Site configuration
 └── package.json
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
-
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
-
-Any static assets, like images, can be placed in the `public/` directory.
-
 ## 🧞 Commands
 
-All commands are run from the root of the project, from a terminal:
+All commands are run from the root of the project:
 
 | Command                   | Action                                           |
 | :------------------------ | :----------------------------------------------- |
@@ -36,8 +61,17 @@ All commands are run from the root of the project, from a terminal:
 | `npm run build`           | Build your production site to `./dist/`          |
 | `npm run preview`         | Preview your build locally, before deploying     |
 | `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
 
-## 👀 Want to learn more?
+## 🚢 Deployment
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+This website is automatically deployed to GitHub Pages via GitHub Actions when changes are pushed to the `main` branch.
+
+- **Live Site**: https://pugdb.github.io
+- **Repository**: https://github.com/pugdb/pugdb.github.io
+
+## 📚 Learn More
+
+- [PugDB Website](https://pugdb.github.io)
+- [Documentation](https://pugdb.github.io/docs)
+- [GitHub Repository](https://github.com/pugdb)
+- [Astro Documentation](https://docs.astro.build)

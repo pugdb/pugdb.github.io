@@ -1,4 +1,6 @@
 ---
+import Footer from '../components/Footer.astro';
+
 interface Props {
   title: string;
   description?: string;
@@ -20,6 +22,7 @@ const { title, description = 'A privacy-first, Rust-native key-value store desig
   <body>
     <div id="app">
       <slot />
+      <Footer />
     </div>
   </body>
 </html>
