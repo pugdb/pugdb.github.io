@@ -18,6 +18,8 @@ const { title, description = 'A privacy-first, Rust-native key-value store desig
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
     <title>{title} | PugDB</title>
+    <!-- Preconnect to CDN for faster terminal loading when needed -->
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
   </head>
   <body>
     <div id="app">

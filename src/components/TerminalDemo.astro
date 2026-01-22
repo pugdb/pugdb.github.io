@@ -1,6 +1,6 @@
 ---
 // Interactive Terminal Demo Component
-// Embeds the showcase terminal for interactive demo
+// Embeds the showcase terminal for interactive demo with lazy loading
 ---
 
 <section class="py-20 bg-gray-900">
@@ -15,12 +15,40 @@
     </div>
 
     <div class="max-w-5xl mx-auto">
-      <div class="terminal-demo-container">
+      <div class="terminal-demo-container" id="terminal-container">
+        <!-- Loading placeholder -->
+        <div class="terminal-loading-placeholder" id="terminal-placeholder">
+          <div class="terminal-skeleton">
+            <div class="skeleton-header">
+              <div class="skeleton-dot"></div>
+              <div class="skeleton-dot"></div>
+              <div class="skeleton-dot"></div>
+            </div>
+            <div class="skeleton-content">
+              <div class="skeleton-line skeleton-line-short"></div>
+              <div class="skeleton-line"></div>
+              <div class="skeleton-line skeleton-line-medium"></div>
+              <div class="skeleton-line"></div>
+              <div class="skeleton-line skeleton-line-short"></div>
+              <div class="skeleton-prompt">
+                <span class="skeleton-prompt-text">f4kvs</span>
+                <span class="skeleton-cursor">█</span>
+              </div>
+            </div>
+          </div>
+          <div class="loading-spinner">
+            <div class="spinner"></div>
+            <p class="loading-text">Loading terminal...</p>
+          </div>
+        </div>
+        
+        <!-- Lazy-loaded iframe -->
         <iframe
-          src="/showcase/terminal-only.html"
+          id="terminal-iframe"
           class="terminal-demo-iframe"
           title="PugDB Interactive Terminal"
           allow="clipboard-read; clipboard-write"
+          loading="lazy"
         ></iframe>
       </div>
       
@@ -39,6 +67,55 @@
   </div>
 </section>
 
+<script>
+  (function() {
+    const container = document.getElementById('terminal-container');
+    const placeholder = document.getElementById('terminal-placeholder');
+    const iframe = document.getElementById('terminal-iframe');
+    
+    if (!container || !placeholder || !iframe) return;
+    
+    let isLoaded = false;
+    
+    // Function to load the iframe
+    function loadTerminal() {
+      if (isLoaded) return;
+      isLoaded = true;
+      
+      // Set the src to start loading
+      iframe.src = '/showcase/terminal-only.html';
+      
+      // Hide placeholder when iframe loads
+      iframe.addEventListener('load', () => {
+        placeholder.style.opacity = '0';
+        setTimeout(() => {
+          placeholder.style.display = 'none';
+          iframe.style.opacity = '1';
+        }, 300);
+      }, { once: true });
+    }
+    
+    // Use Intersection Observer to lazy load
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting && !isLoaded) {
+            loadTerminal();
+            observer.disconnect();
+          }
+        });
+      }, {
+        rootMargin: '200px' // Start loading 200px before entering viewport
+      });
+      
+      observer.observe(container);
+    } else {
+      // Fallback: load after a short delay if IntersectionObserver not available
+      setTimeout(loadTerminal, 1000);
+    }
+  })();
+</script>
+
 <style>
   .terminal-demo-container {
     width: 100%;
@@ -50,6 +127,7 @@
       0 0 0 1px rgba(255, 255, 255, 0.1);
     background: #0f172a;
     border: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
   }
 
   .terminal-demo-iframe {
@@ -57,6 +135,149 @@
     height: 100%;
     border: 0;
     display: block;
+    opacity: 0;
+    transition: opacity 0.3s ease-in;
+  }
+
+  .terminal-loading-placeholder {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #0f172a;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.3s ease-out;
+    z-index: 1;
+  }
+
+  .terminal-skeleton {
+    width: 100%;
+    height: 100%;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .skeleton-header {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .skeleton-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #334155;
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+
+  .skeleton-dot:nth-child(1) {
+    animation-delay: 0s;
+  }
+
+  .skeleton-dot:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+
+  .skeleton-dot:nth-child(3) {
+    animation-delay: 0.4s;
+  }
+
+  .skeleton-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding-left: 0.5rem;
+  }
+
+  .skeleton-line {
+    height: 1rem;
+    background: #1e293b;
+    border-radius: 2px;
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+
+  .skeleton-line-short {
+    width: 40%;
+  }
+
+  .skeleton-line-medium {
+    width: 60%;
+  }
+
+  .skeleton-prompt {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: auto;
+    padding-top: 1rem;
+  }
+
+  .skeleton-prompt-text {
+    color: #06b6d4;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    font-size: 0.875rem;
+  }
+
+  .skeleton-cursor {
+    color: #10b981;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    animation: blink 1s step-end infinite;
+  }
+
+  .loading-spinner {
+    position: absolute;
+    bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .spinner {
+    width: 32px;
+    height: 32px;
+    border: 3px solid rgba(139, 92, 246, 0.2);
+    border-top-color: #8b5cf6;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+
+  .loading-text {
+    color: #94a3b8;
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+
+  @keyframes pulse {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
+  }
+
+  @keyframes blink {
+    0%, 50% {
+      opacity: 1;
+    }
+    51%, 100% {
+      opacity: 0;
+    }
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
   }
 
   @media (max-width: 768px) {
