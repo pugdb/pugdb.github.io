@@ -1,0 +1,67 @@
+---
+import { NAV_ITEMS } from '../config/constants';
+import ChameleonLogo from './ChameleonLogo.astro';
+---
+
+<header class="fixed top-0 left-0 right-0 z-50 backdrop-blur-nav border-b border-gray-800/50">
+  <nav class="container mx-auto px-6 py-3 flex items-center justify-between">
+    <a href="/" class="flex items-center gap-3 hover:opacity-80 transition-opacity">
+      <div class="w-16 h-16">
+        <ChameleonLogo />
+      </div>
+      <span class="text-xl font-bold text-white">PugDB</span>
+    </a>
+
+    <div class="hidden md:flex items-center gap-8">
+      {NAV_ITEMS.map((item) => (
+        <a
+          href={item.href}
+          target={item.external ? '_blank' : undefined}
+          rel={item.external ? 'noopener noreferrer' : undefined}
+          class="text-gray-300 hover:text-white transition-colors font-medium"
+        >
+          {item.name}
+        </a>
+      ))}
+    </div>
+
+    <!-- Mobile menu button -->
+    <button
+      id="mobile-menu-button"
+      class="md:hidden text-white p-2"
+      aria-label="Toggle menu"
+    >
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+    </button>
+  </nav>
+
+  <!-- Mobile menu -->
+  <div id="mobile-menu" class="hidden md:hidden backdrop-blur-nav border-t border-gray-800/50">
+    <div class="container mx-auto px-6 py-4 flex flex-col gap-4">
+      {NAV_ITEMS.map((item) => (
+        <a
+          href={item.href}
+          target={item.external ? '_blank' : undefined}
+          rel={item.external ? 'noopener noreferrer' : undefined}
+          class="text-gray-300 hover:text-white transition-colors font-medium py-2"
+        >
+          {item.name}
+        </a>
+      ))}
+    </div>
+  </div>
+</header>
+
+<script>
+  const menuButton = document.getElementById('mobile-menu-button');
+  const mobileMenu = document.getElementById('mobile-menu');
+
+  if (menuButton && mobileMenu) {
+    menuButton.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+  }
+</script>
+

@@ -1,0 +1,49 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+---
+
+<BaseLayout title="Documentation" description="Learn about PugDB - a privacy-first, Rust-native key-value store.">
+  <Header />
+
+  <main class="pt-20 min-h-screen bg-gray-900">
+    <div class="container mx-auto px-6 py-16">
+      <div class="max-w-4xl mx-auto">
+        <h1 class="text-5xl font-bold text-white mb-4">Documentation</h1>
+        <p class="text-xl text-gray-400 mb-12">
+          Learn about PugDB's architecture, features, and how to get started.
+        </p>
+
+        <div class="grid md:grid-cols-2 gap-6">
+          <a href="/docs/what-is-pugdb" class="bg-gray-800/60 rounded-xl p-8 border border-gray-700/50 hover:border-purple-500/50 transition-all hover:shadow-lg hover:shadow-purple-500/10 group">
+            <h2 class="text-2xl font-bold text-white mb-3 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-purple-400 group-hover:to-pink-500 transition-all">
+              What is PugDB?
+            </h2>
+            <p class="text-gray-400">
+              Introduction to PugDB - a privacy-first, Rust-native key-value store for high-performance applications.
+            </p>
+          </a>
+
+          <a href="/docs/why-pugdb" class="bg-gray-800/60 rounded-xl p-8 border border-gray-700/50 hover:border-cyan-500/50 transition-all hover:shadow-lg hover:shadow-cyan-500/10 group">
+            <h2 class="text-2xl font-bold text-white mb-3 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-cyan-400 group-hover:to-blue-500 transition-all">
+              Why PugDB?
+            </h2>
+            <p class="text-gray-400">
+              Discover why PugDB is needed - performance advantages, key differentiators, and problems it solves.
+            </p>
+          </a>
+
+          <a href="/docs/how-pugdb-works" class="bg-gray-800/60 rounded-xl p-8 border border-gray-700/50 hover:border-orange-500/50 transition-all hover:shadow-lg hover:shadow-orange-500/10 group md:col-span-2">
+            <h2 class="text-2xl font-bold text-white mb-3 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-orange-400 group-hover:to-pink-500 transition-all">
+              How PugDB Works
+            </h2>
+            <p class="text-gray-400">
+              Technical architecture and implementation details of PugDB's layered architecture.
+            </p>
+          </a>
+        </div>
+      </div>
+    </div>
+  </main>
+</BaseLayout>
+

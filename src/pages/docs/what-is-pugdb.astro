@@ -1,0 +1,172 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+---
+
+<BaseLayout title="What is PugDB?" description="Introduction to PugDB - a privacy-first, Rust-native key-value store for high-performance applications">
+  <Header />
+
+  <main class="pt-20 min-h-screen bg-gray-900">
+    <div class="container mx-auto px-6 py-16">
+      <article class="max-w-4xl mx-auto prose prose-invert prose-lg">
+        <h1 class="text-5xl font-bold text-white mb-4">What is PugDB?</h1>
+
+        <p class="text-xl text-gray-300 mb-8">
+          <strong>PugDB</strong> (formerly F4KVS) is a <strong>privacy-first, Rust-native key-value store</strong> designed for high-performance applications. Built with modern Rust and optimized for speed, reliability, and data sovereignty.
+        </p>
+
+        <section class="mb-12">
+          <h2 class="text-3xl font-bold text-white mb-4">Core Definition</h2>
+          <p class="text-gray-300 mb-4">PugDB is a high-performance key-value storage system that provides:</p>
+          <ul class="text-gray-300 space-y-2 list-disc list-inside">
+            <li><strong class="text-white">Verified Performance</strong>: 5.8x faster than PostgreSQL, 3.5x faster than ScyllaDB (YCSB benchmarks, single-threaded sequential workload)</li>
+            <li><strong class="text-white">Low Latency</strong>: P50 latency 0.029-0.072ms, P99 latency 0.076-0.272ms</li>
+            <li><strong class="text-white">Production-Ready Core</strong>: 5,454 tests passing (100% pass rate), 63.41% code coverage (as of January 2026)</li>
+            <li><strong class="text-white">Privacy-First Design</strong>: Built with encryption support, audit logging, and offline-first capabilities</li>
+            <li><strong class="text-white">Rust-Native</strong>: Leverages Rust's memory safety and modern async/await patterns</li>
+          </ul>
+        </section>
+
+        <section class="mb-12">
+          <h2 class="text-3xl font-bold text-white mb-4">Key Characteristics</h2>
+
+          <div class="mb-6">
+            <h3 class="text-2xl font-semibold text-white mb-3">High Performance</h3>
+            <p class="text-gray-300">PugDB delivers exceptional performance with verified YCSB benchmarks (last updated: January 2026) showing 5.8x faster throughput than PostgreSQL and 3.5x faster than ScyllaDB on single-threaded sequential workloads. The system is optimized for low latency, with P50 latency of 0.029-0.072ms and P99 latency of 0.076-0.272ms across all workloads.</p>
+          </div>
+
+          <div class="mb-6">
+            <h3 class="text-2xl font-semibold text-white mb-3">Rust-Native Architecture</h3>
+            <p class="text-gray-300 mb-2">Built entirely in Rust, PugDB leverages:</p>
+            <ul class="text-gray-300 space-y-1 list-disc list-inside">
+              <li><strong class="text-white">Async/Await</strong>: Full Tokio integration for excellent concurrency</li>
+              <li><strong class="text-white">Memory Safety</strong>: Rust's compile-time guarantees eliminate entire classes of bugs</li>
+              <li><strong class="text-white">Modern Patterns</strong>: Clean, idiomatic Rust code that's maintainable and performant</li>
+            </ul>
+          </div>
+
+          <div class="mb-6">
+            <h3 class="text-2xl font-semibold text-white mb-3">Production-Ready Core</h3>
+            <p class="text-gray-300 mb-2">The foundation of PugDB is production-ready and battle-tested:</p>
+            <ul class="text-gray-300 space-y-1 list-disc list-inside">
+              <li>Core key-value operations (get, put, delete, exists)</li>
+              <li>Memory storage engines (HashMap, BTreeMap) - <strong class="text-white">Production Ready (GA)</strong></li>
+              <li>Graceful shutdown and recovery</li>
+              <li>Memory leak detection</li>
+              <li>Monitoring hooks and metrics collection</li>
+            </ul>
+          </div>
+
+          <div class="mb-6">
+            <h3 class="text-2xl font-semibold text-white mb-3">Privacy-Focused Design</h3>
+            <p class="text-gray-300 mb-2">PugDB is built with privacy and data sovereignty in mind:</p>
+            <ul class="text-gray-300 space-y-1 list-disc list-inside">
+              <li>Encryption support for data at rest and in transit</li>
+              <li>Audit logging capabilities</li>
+              <li>Offline-first architecture</li>
+              <li>Local-first data storage patterns</li>
+            </ul>
+          </div>
+
+          <div class="mb-6">
+            <h3 class="text-2xl font-semibold text-white mb-3">Modular Architecture</h3>
+            <p class="text-gray-300 mb-2">PugDB follows a clean, layered architecture that separates concerns:</p>
+            <ul class="text-gray-300 space-y-1 list-disc list-inside">
+              <li><strong class="text-white">Foundation Layer</strong>: Core abstractions and memory storage</li>
+              <li><strong class="text-white">Extensions Layer</strong>: Advanced storage engines, query language, monitoring</li>
+              <li><strong class="text-white">Distributed Layer</strong>: Server, client, and clustering capabilities</li>
+              <li><strong class="text-white">Cloud Layer</strong>: S3-compatible storage and intelligent tiering</li>
+              <li><strong class="text-white">Application Layer</strong>: CLI tools and utilities</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="mb-12">
+          <h2 class="text-3xl font-bold text-white mb-4">Main Features</h2>
+
+          <div class="mb-6">
+            <h3 class="text-2xl font-semibold text-white mb-3">Multiple Storage Engines</h3>
+            <ul class="text-gray-300 space-y-2 list-disc list-inside">
+              <li><strong class="text-white">Memory Storage (GA)</strong>: HashMap and BTreeMap backends - Production Ready (813 tests, 80%+ coverage)</li>
+              <li><strong class="text-white">LSM-Tree Storage (GA)</strong>: Production Ready - 51 unit tests + integration tests, comprehensive crash recovery</li>
+              <li><strong class="text-white">Partitioned Storage (GA)</strong>: Production Ready - Extensive integration tests, 6+ test suites, stress-tested concurrency</li>
+              <li><strong class="text-white">File System Storage</strong>: Not available in v2 (intentionally not migrated)</li>
+            </ul>
+          </div>
+
+          <div class="mb-6">
+            <h3 class="text-2xl font-semibold text-white mb-3">Compression Support</h3>
+            <p class="text-gray-300">Efficient data compression with multiple algorithms: LZ4, Zstd, Gzip, and Snappy.</p>
+          </div>
+
+          <div class="mb-6">
+            <h3 class="text-2xl font-semibold text-white mb-3">Monitoring and Metrics</h3>
+            <p class="text-gray-300">Built-in observability for production deployments: Prometheus metrics integration, health check endpoints, performance monitoring hooks, and resource usage tracking.</p>
+          </div>
+
+          <div class="mb-6">
+            <h3 class="text-2xl font-semibold text-white mb-3">Query Language</h3>
+            <p class="text-gray-300">Beta (Approaching Production) SQL support with 856+ tests passing: Window functions (100% complete, GA), JOINs (100% complete, GA), subqueries (95% complete, GA), query optimization (100% complete), and transactions (90% complete).</p>
+          </div>
+        </section>
+
+        <section class="mb-12">
+          <h2 class="text-3xl font-bold text-white mb-4">Performance Highlights</h2>
+          <p class="text-gray-300 mb-4">PugDB's performance has been verified through extensive YCSB benchmarking with proper isolation and statistical validation (last updated: January 2026):</p>
+          <ul class="text-gray-300 space-y-2 list-disc list-inside">
+            <li><strong class="text-white">Throughput</strong>: 5.8x faster than PostgreSQL (4.3x - 7.9x range), 3.5x faster than ScyllaDB (2.3x - 4.4x range)</li>
+            <li><strong class="text-white">Latency</strong>: P50 latency 0.029-0.072ms, P99 latency 0.076-0.272ms</li>
+            <li><strong class="text-white">Batch Operations</strong>: Optimized with connection reuse</li>
+            <li><strong class="text-white">Concurrency</strong>: Excellent scaling up to 32 threads</li>
+            <li><strong class="text-white">Memory Efficiency</strong>: Consistent performance with memory pools</li>
+          </ul>
+          <p class="text-gray-400 text-sm mt-4 italic">
+            *Benchmark Methodology: Results from single-threaded sequential YCSB workloads. Both PugDB and competitors tested identically. Real-world performance with concurrent workloads may differ.*
+          </p>
+        </section>
+
+        <section class="mb-12">
+          <h2 class="text-3xl font-bold text-white mb-4">Quality Metrics</h2>
+          <p class="text-gray-300 mb-4">PugDB maintains high quality standards with comprehensive testing:</p>
+          <ul class="text-gray-300 space-y-2 list-disc list-inside">
+            <li><strong class="text-white">Test Coverage</strong>: 5,454 tests passing (100% pass rate)</li>
+            <li><strong class="text-white">Code Coverage</strong>: 63.41% overall (regions: 63.41%, functions: 63.11%, lines: 62.83%) - as of January 2026</li>
+            <li><strong class="text-white">Production Components</strong>: Core, storage, network, and clustering layers are production-ready</li>
+            <li><strong class="text-white">Beta Components</strong>: Query language (856+ tests) and observability approaching production</li>
+          </ul>
+        </section>
+
+        <div class="mt-12 pt-8 border-t border-gray-700">
+          <p class="text-gray-400 text-sm">
+            <em>Note: PugDB is the new name for F4KVS. All references to F4KVS in documentation and code will gradually transition to PugDB.</em>
+          </p>
+        </div>
+
+        <div class="mt-8 flex gap-4">
+          <a href="/docs" class="text-purple-400 hover:text-purple-300">← Back to Docs</a>
+          <a href="/docs/why-pugdb" class="text-purple-400 hover:text-purple-300 ml-auto">Why PugDB? →</a>
+        </div>
+      </article>
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .prose {
+    color: rgb(209 213 219);
+  }
+  .prose h1, .prose h2, .prose h3 {
+    color: rgb(255 255 255);
+  }
+  .prose a {
+    color: rgb(196 181 253);
+  }
+  .prose a:hover {
+    color: rgb(167 139 250);
+  }
+  .prose strong {
+    color: rgb(255 255 255);
+    font-weight: 600;
+  }
+</style>
+

@@ -1,0 +1,40 @@
+---
+// Image Logo component
+---
+
+<div class="logo-container">
+  <div class="logo-wrapper">
+    <img
+      src="/logos/pug-logo.jpg"
+      alt="PugDB Logo"
+      class="chameleon-logo"
+    />
+  </div>
+</div>
+
+<style>
+  .logo-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .logo-wrapper {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    /* Optional subtle border effect */
+    filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.1));
+  }
+
+  .chameleon-logo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+</style>
+

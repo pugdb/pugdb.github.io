@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PugDB - Interactive Showcase</title>
+    <link rel="stylesheet" href="assets/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xterm@5.3.0/css/xterm.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Hero Section -->
+        <header class="hero">
+            <h1 class="hero-title">PugDB</h1>
+            <p class="hero-subtitle">Fast, Flexible, Feature-rich Key-Value Store</p>
+            <p class="hero-description">Experience the power of PugDB with our interactive showcase</p>
+            <button id="start-demo" class="cta-button">Try it now</button>
+        </header>
+
+        <!-- Main Showcase -->
+        <div id="showcase" class="showcase" style="display: none;">
+            <!-- Navigation -->
+            <nav class="nav">
+                <button class="nav-btn active" data-demo="zero-config">Zero-Config</button>
+                <button class="nav-btn" data-demo="performance">Performance</button>
+                <button class="nav-btn" data-demo="sql">SQL</button>
+                <button class="nav-btn" data-demo="architecture">Architecture</button>
+            </nav>
+
+            <!-- Main Content Area -->
+            <div class="main-content">
+                <!-- Terminal Container -->
+                <div class="terminal-container">
+                    <div id="terminal"></div>
+                </div>
+
+                <!-- Demo Info Panel -->
+                <div class="demo-info">
+                    <h2 id="demo-title">Zero-Config Magic</h2>
+                    <p id="demo-description">Watch PugDB automatically detect your system and configure itself.</p>
+                </div>
+            </div>
+
+            <!-- Command Shortcuts Panel -->
+            <aside class="commands-panel" id="commands-panel">
+                <div class="commands-header">
+                    <h3>Command Shortcuts</h3>
+                    <button class="toggle-panel" id="toggle-panel" title="Toggle panel">−</button>
+                </div>
+                <div class="commands-collapsed-label">commands</div>
+                <div class="commands-content">
+                    <!-- KVS Commands -->
+                    <div class="command-group">
+                        <h4>Key-Value Store</h4>
+                        <button class="cmd-shortcut" data-command="put user:1 '{\"name\":\"Alice\",\"age\":30}'">put user:1</button>
+                        <button class="cmd-shortcut" data-command="get user:1">get user:1</button>
+                        <button class="cmd-shortcut" data-command="scan user:">scan user:</button>
+                        <button class="cmd-shortcut" data-command="stats">stats</button>
+                    </div>
+
+                    <!-- SQL Commands -->
+                    <div class="command-group">
+                        <h4>SQL Queries</h4>
+                        <button class="cmd-shortcut" data-command="sql CREATE TABLE users (id INTEGER PRIMARY KEY, name STRING, age INTEGER, dept STRING);">CREATE TABLE users</button>
+                        <button class="cmd-shortcut" data-command="sql INSERT INTO users (name, age) VALUES ('Alice', 30);">INSERT INTO users</button>
+                        <button class="cmd-shortcut batch-insert" data-batch-inserts='["sql INSERT INTO users (name, age, dept) VALUES (\"Alice\", 30, \"Engineering\");","sql INSERT INTO users (name, age, dept) VALUES (\"Bob\", 25, \"Sales\");","sql INSERT INTO users (name, age, dept) VALUES (\"Charlie\", 35, \"Engineering\");","sql INSERT INTO users (name, age, dept) VALUES (\"Diana\", 28, \"Marketing\");","sql INSERT INTO users (name, age, dept) VALUES (\"Eve\", 32, \"Engineering\");"]'>Batch INSERT (5 users)</button>
+                        <button class="cmd-shortcut batch-insert" data-batch-inserts='["sql INSERT INTO departments (name, budget) VALUES (\"Engineering\", 500000);","sql INSERT INTO departments (name, budget) VALUES (\"Sales\", 300000);","sql INSERT INTO departments (name, budget) VALUES (\"Marketing\", 200000);"]'>Batch INSERT (3 departments)</button>
+                        <button class="cmd-shortcut" data-command="sql SELECT * FROM users;">SELECT * FROM users</button>
+                        <button class="cmd-shortcut" data-command="sql SELECT * FROM users WHERE age > 30;">SELECT WHERE</button>
+                        <button class="cmd-shortcut" data-command="sql SELECT dept, COUNT(*) FROM users GROUP BY dept;">GROUP BY</button>
+                        <button class="cmd-shortcut" data-command="sql SELECT dept, COUNT(*) as count, AVG(age) as avg_age FROM users GROUP BY dept;">Aggregation (COUNT+AVG)</button>
+                        <button class="cmd-shortcut" data-command="sql SELECT u.name, d.budget FROM users u JOIN departments d ON u.dept = d.name;">JOIN</button>
+                        <button class="cmd-shortcut" data-command="sql SELECT name, age, RANK() OVER (ORDER BY age DESC) as age_rank FROM users;">Window Functions</button>
+                    </div>
+
+                    <!-- Batch Commands -->
+                    <div class="command-group">
+                        <h4>Batch Operations</h4>
+                        <button class="cmd-shortcut" data-command="batch put '[[\"user:1\",\"Alice\"],[\"user:2\",\"Bob\"]]'">batch put</button>
+                        <button class="cmd-shortcut" data-command="batch get '[\"user:1\",\"user:2\"]'">batch get</button>
+                    </div>
+
+                    <!-- Demo Commands -->
+                    <div class="command-group">
+                        <h4>Demos</h4>
+                        <button class="cmd-shortcut" data-command="demo zero-config">demo zero-config</button>
+                        <button class="cmd-shortcut" data-command="demo performance">demo performance</button>
+                        <button class="cmd-shortcut" data-command="demo sql">demo sql</button>
+                    </div>
+
+                    <!-- Utility Commands -->
+                    <div class="command-group">
+                        <h4>Utilities</h4>
+                        <button class="cmd-shortcut" data-command="help">help</button>
+                        <button class="cmd-shortcut" data-command="clear">clear</button>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/xterm@5.3.0/lib/xterm.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xterm-addon-fit@0.8.0/lib/xterm-addon-fit.js"></script>
+    <script>
+        // Make FitAddon available globally for terminal.js
+        if (typeof FitAddon !== 'undefined') {
+            window.FitAddon = FitAddon;
+        }
+    </script>
+    <script src="assets/simulation.js"></script>
+    <script src="assets/sql-engine.js"></script>
+    <script src="assets/persistence.js"></script>
+    <script src="terminal/terminal.js"></script>
+    <!-- WASM Loader (ES module) -->
+    <script type="module" src="wasm-poc-loader.js"></script>
+    <!-- Demos: Simulation (fallback) -->
+    <script src="demos/wasm/zero-config.js"></script>
+    <script src="demos/wasm/performance.js"></script>
+    <script src="demos/wasm/sql-demo.js"></script>
+    <!-- Demos: WASM (preferred when available) -->
+    <script src="demos/wasm/zero-config-wasm.js"></script>
+    <!-- Main App (must load last) -->
+    <script src="assets/app.js"></script>
+</body>
+</html>

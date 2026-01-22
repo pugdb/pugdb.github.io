@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PugDB Terminal</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xterm@5.3.0/css/xterm.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: #0f172a;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            overflow: hidden;
+        }
+        
+        .terminal-wrapper {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .terminal-container {
+            flex: 1;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        #terminal {
+            width: 100%;
+            height: 100%;
+            max-width: 100%;
+            max-height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="terminal-wrapper">
+        <div class="terminal-container">
+            <div id="terminal"></div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/xterm@5.3.0/lib/xterm.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xterm-addon-fit@0.8.0/lib/xterm-addon-fit.js"></script>
+    <script>
+        // Make FitAddon available globally for terminal.js
+        if (typeof FitAddon !== 'undefined') {
+            window.FitAddon = FitAddon;
+        }
+    </script>
+    <script src="assets/simulation.js"></script>
+    <script src="assets/sql-engine.js"></script>
+    <script src="assets/persistence.js"></script>
+    <script src="terminal/terminal.js"></script>
+    <!-- WASM Loader (ES module) -->
+    <script type="module" src="wasm-poc-loader.js"></script>
+    <!-- Demos: Simulation (fallback) -->
+    <script src="demos/wasm/zero-config.js"></script>
+    <script src="demos/wasm/performance.js"></script>
+    <script src="demos/wasm/sql-demo.js"></script>
+    <!-- Demos: WASM (preferred when available) -->
+    <script src="demos/wasm/zero-config-wasm.js"></script>
+    <!-- Include app.js for command handling functions -->
+    <script src="assets/app.js"></script>
+    
+    <script>
+        // Initialize terminal directly
+        // Note: terminal variable is already declared in app.js
+        
+        // Override runDemo to work without UI elements
+        const originalRunDemo = window.runDemo;
+        window.runDemo = async function(demoName) {
+            if (!terminal) return;
+            
+            if (!demoName) {
+                terminal.writeln('\x1b[31mError: Please specify a demo name\x1b[0m');
+                terminal.writeln('Available demos: zero-config, performance, sql, architecture');
+                terminal.prompt();
+                return;
+            }
+            
+            // Call original runDemo but skip UI updates
+            if (originalRunDemo) {
+                // Temporarily override updateDemoInfo to do nothing
+                const originalUpdateDemoInfo = window.updateDemoInfo;
+                window.updateDemoInfo = () => {}; // No-op for terminal-only
+                
+                await originalRunDemo(demoName);
+                
+                // Restore if needed
+                if (originalUpdateDemoInfo) {
+                    window.updateDemoInfo = originalUpdateDemoInfo;
+                }
+            }
+        };
+        
+        // Setup event listeners for terminal commands
+        function setupEventListeners() {
+            // Listen for demo requests from terminal
+            window.addEventListener('demo-request', (e) => {
+                window.runDemo(e.detail.demo);
+            });
+            
+            // Listen for f4kvs commands from terminal
+            window.addEventListener('f4kvs-command', async (e) => {
+                if (window.handleF4KVSCommand) {
+                    await window.handleF4KVSCommand(e.detail);
+                }
+            });
+            
+            // Listen for SQL queries from terminal
+            window.addEventListener('sql-query', async (e) => {
+                if (window.handleSQLQuery) {
+                    await window.handleSQLQuery(e.detail.query);
+                }
+            });
+        }
+        
+        // Initialize when DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            // Wait for app.js to load
+            setTimeout(() => {
+                // Initialize terminal
+                terminal = new F4KVSTerminal('terminal');
+                
+                // Make terminal available globally for app.js functions
+                window.terminal = terminal;
+                
+                // Setup event listeners
+                setupEventListeners();
+            
+                // Pre-load WASM in background (non-blocking)
+                if (typeof window.initWASM === 'function') {
+                    window.initWASM().then(async () => {
+                        if (window.createWASMInstance) {
+                            try {
+                                await window.createWASMInstance();
+                                
+                                // Load persisted data if available
+                                if (window.loadFromPersistence) {
+                                    try {
+                                        const loadedCount = await window.loadFromPersistence();
+                                        if (loadedCount > 0 && terminal) {
+                                            setTimeout(() => {
+                                                terminal.writeln(`\x1b[36m💾 Restored ${loadedCount} persisted key-value pair(s) from IndexedDB\x1b[0m`);
+                                                terminal.writeln('\x1b[33mTip:\x1b[0m Data is automatically saved. Use \x1b[36mclear-persistence\x1b[0m to reset.\n');
+                                            }, 500);
+                                        }
+                                    } catch (err) {
+                                        console.warn('Failed to load persisted data:', err);
+                                    }
+                                }
+                            } catch (err) {
+                                console.warn('Failed to initialize WASM:', err);
+                            }
+                        }
+                    }).catch(err => {
+                        console.warn('WASM pre-load failed (will use simulation):', err);
+                    });
+                }
+            }, 100);
+        });
+        
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            if (terminal && terminal.fitAddon) {
+                terminal.fitAddon.fit();
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,186 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+---
+
+<BaseLayout title="Why PugDB?" description="Discover why PugDB is needed - performance advantages, key differentiators, and problems it solves">
+  <Header />
+
+  <main class="pt-20 min-h-screen bg-gray-900">
+    <div class="container mx-auto px-6 py-16">
+      <article class="max-w-4xl mx-auto prose prose-invert prose-lg">
+        <h1 class="text-5xl font-bold text-white mb-4">Why PugDB?</h1>
+
+        <p class="text-xl text-gray-300 mb-8">
+          Modern applications demand high-performance, reliable, and secure data storage. Existing key-value store solutions often fall short in critical areas: performance bottlenecks, memory safety concerns, privacy limitations, and outdated architectures. PugDB addresses these challenges head-on.
+        </p>
+
+        <section class="mb-12">
+          <h2 class="text-3xl font-bold text-white mb-4">Performance Advantages</h2>
+          <p class="text-gray-300 mb-4">PugDB delivers superior performance compared to established key-value store solutions:</p>
+
+          <div class="bg-gray-800/60 rounded-xl p-6 border border-gray-700/50 mb-6">
+            <table class="w-full text-left">
+              <thead>
+                <tr class="border-b border-gray-700">
+                  <th class="pb-3 text-white font-semibold">Solution</th>
+                  <th class="pb-3 text-white font-semibold">Throughput (ops/sec)</th>
+                  <th class="pb-3 text-white font-semibold">P50 Latency</th>
+                  <th class="pb-3 text-white font-semibold">P99 Latency</th>
+                  <th class="pb-3 text-white font-semibold">Improvement</th>
+                </tr>
+              </thead>
+              <tbody class="text-gray-300">
+                <tr class="border-b border-gray-800">
+                  <td class="py-3"><strong class="text-white">PugDB</strong></td>
+                  <td class="py-3"><strong class="text-green-400">16,777-30,389</strong></td>
+                  <td class="py-3"><strong class="text-green-400">0.029-0.072ms</strong></td>
+                  <td class="py-3"><strong class="text-green-400">0.076-0.272ms</strong></td>
+                  <td class="py-3"><strong class="text-green-400">Baseline</strong></td>
+                </tr>
+                <tr class="border-b border-gray-800">
+                  <td class="py-3">PostgreSQL</td>
+                  <td class="py-3">3,491-4,695</td>
+                  <td class="py-3">0.195-0.270ms</td>
+                  <td class="py-3">0.391-0.487ms</td>
+                  <td class="py-3"><strong class="text-red-400">4.3x-7.9x slower</strong></td>
+                </tr>
+                <tr>
+                  <td class="py-3">ScyllaDB</td>
+                  <td class="py-3">6,741-7,681</td>
+                  <td class="py-3">0.138-0.144ms</td>
+                  <td class="py-3">0.176-0.211ms</td>
+                  <td class="py-3"><strong class="text-red-400">2.3x-4.4x slower</strong></td>
+                </tr>
+              </tbody>
+            </table>
+            <p class="text-gray-400 text-sm mt-4">* YCSB benchmark results with proper isolation and statistical validation (last updated: January 2026). Results from single-threaded sequential workloads. Both PugDB and competitors tested identically. Real-world performance with concurrent workloads may differ.</p>
+          </div>
+
+          <p class="text-gray-300 mb-4">PugDB's verified performance advantages include:</p>
+          <ul class="text-gray-300 space-y-2 list-disc list-inside">
+            <li><strong class="text-white">Consistent Low Latency</strong>: P50 latency 0.029-0.072ms, P99 latency 0.076-0.272ms</li>
+            <li><strong class="text-white">Superior Throughput</strong>: 5.8x faster than PostgreSQL, 3.5x faster than ScyllaDB on average (single-threaded sequential workload)</li>
+            <li><strong class="text-white">Excellent Concurrency</strong>: Scales well up to 32 threads</li>
+            <li><strong class="text-white">Memory Efficiency</strong>: Optimized memory pools and resource management</li>
+            <li><strong class="text-white">Batch Operations</strong>: Highly optimized bulk operations with connection reuse</li>
+          </ul>
+        </section>
+
+        <section class="mb-12">
+          <h2 class="text-3xl font-bold text-white mb-4">Key Differentiators</h2>
+
+          <div class="mb-6">
+            <h3 class="text-2xl font-semibold text-white mb-3">Memory Safety</h3>
+            <p class="text-gray-300 mb-2"><strong class="text-white">The Problem</strong>: Traditional key-value stores written in C/C++ are prone to memory safety issues: buffer overflows, use-after-free bugs, memory leaks, and security vulnerabilities.</p>
+            <p class="text-gray-300"><strong class="text-white">PugDB's Solution</strong>: Built entirely in Rust, PugDB eliminates entire classes of bugs with compile-time safety, zero-cost abstractions, no garbage collection, and proven reliability.</p>
+          </div>
+
+          <div class="mb-6">
+            <h3 class="text-2xl font-semibold text-white mb-3">Privacy-First Architecture</h3>
+            <p class="text-gray-300 mb-2"><strong class="text-white">The Problem</strong>: Many storage solutions prioritize convenience over privacy: data sovereignty concerns, limited encryption options, no offline-first capabilities, compliance challenges.</p>
+            <p class="text-gray-300"><strong class="text-white">PugDB's Solution</strong>: Privacy is built into the foundation with encryption support, audit logging, offline-first design, and local-first storage.</p>
+          </div>
+
+          <div class="mb-6">
+            <h3 class="text-2xl font-semibold text-white mb-3">Modern Async/Await Design</h3>
+            <p class="text-gray-300 mb-2"><strong class="text-white">The Problem</strong>: Legacy storage systems use outdated concurrency models: blocking I/O operations, thread-per-request models, limited scalability, complex error handling.</p>
+            <p class="text-gray-300"><strong class="text-white">PugDB's Solution</strong>: Modern Rust async/await with Tokio: non-blocking I/O, excellent concurrency, clean error handling, and future-proof patterns.</p>
+          </div>
+
+          <div class="mb-6">
+            <h3 class="text-2xl font-semibold text-white mb-3">Rust-Native Integration</h3>
+            <p class="text-gray-300 mb-2"><strong class="text-white">The Problem</strong>: Using storage solutions from other languages in Rust applications: FFI overhead and complexity, type system mismatches, limited integration options, performance penalties.</p>
+            <p class="text-gray-300"><strong class="text-white">PugDB's Solution</strong>: Native Rust implementation with zero FFI overhead, type safety, seamless integration, and optimal performance.</p>
+          </div>
+        </section>
+
+        <section class="mb-12">
+          <h2 class="text-3xl font-bold text-white mb-4">Target Use Cases</h2>
+
+          <div class="space-y-6">
+            <div class="bg-gray-800/60 rounded-xl p-6 border border-gray-700/50">
+              <h3 class="text-xl font-semibold text-white mb-2">Single-Server High-Performance Caching</h3>
+              <p class="text-gray-300 mb-2">Ideal for session storage, application-level caching, real-time data processing, and high-frequency read/write workloads.</p>
+              <p class="text-gray-400 text-sm">Why PugDB: 5.8x faster than PostgreSQL, 3.5x faster than ScyllaDB (single-threaded sequential workload), sub-millisecond latency (P50: 0.029-0.072ms), production-ready memory storage, excellent concurrency support.</p>
+            </div>
+
+            <div class="bg-gray-800/60 rounded-xl p-6 border border-gray-700/50">
+              <h3 class="text-xl font-semibold text-white mb-2">Edge Computing and IoT</h3>
+              <p class="text-gray-300 mb-2">Ideal for edge device local storage, IoT data collection and caching, offline-first applications, and resource-constrained environments.</p>
+              <p class="text-gray-400 text-sm">Why PugDB: Small memory footprint, efficient resource usage, privacy-focused design, offline-first architecture.</p>
+            </div>
+
+            <div class="bg-gray-800/60 rounded-xl p-6 border border-gray-700/50">
+              <h3 class="text-xl font-semibold text-white mb-2">Privacy-Sensitive Applications</h3>
+              <p class="text-gray-300 mb-2">Ideal for healthcare data storage, financial transaction caching, legal document management, and compliance-critical systems.</p>
+              <p class="text-gray-400 text-sm">Why PugDB: Encryption support built-in, audit logging capabilities, local-first data storage, data sovereignty control.</p>
+            </div>
+
+            <div class="bg-gray-800/60 rounded-xl p-6 border border-gray-700/50">
+              <h3 class="text-xl font-semibold text-white mb-2">Rust-Native Applications</h3>
+              <p class="text-gray-300 mb-2">Ideal for applications already built in Rust, high-performance Rust services, systems requiring memory safety, and modern async Rust applications.</p>
+              <p class="text-gray-400 text-sm">Why PugDB: Native Rust implementation, zero FFI overhead, type-safe integration, idiomatic Rust APIs.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="mb-12">
+          <h2 class="text-3xl font-bold text-white mb-4">When to Choose PugDB</h2>
+
+          <div class="grid md:grid-cols-2 gap-6 mb-6">
+            <div class="bg-green-900/20 rounded-xl p-6 border border-green-700/50">
+              <h3 class="text-xl font-semibold text-white mb-3">✅ Choose PugDB When:</h3>
+              <ul class="text-gray-300 space-y-2 list-disc list-inside text-sm">
+                <li>You need high-performance single-node key-value storage</li>
+                <li>Memory safety is a priority</li>
+                <li>Privacy and data sovereignty matter</li>
+                <li>You're building in Rust</li>
+                <li>You need offline-first capabilities</li>
+                <li>Low latency is critical</li>
+                <li>You want production-ready core features</li>
+              </ul>
+            </div>
+
+            <div class="bg-orange-900/20 rounded-xl p-6 border border-orange-700/50">
+              <h3 class="text-xl font-semibold text-white mb-3">❌ Consider Alternatives When:</h3>
+              <ul class="text-gray-300 space-y-2 list-disc list-inside text-sm">
+                <li>You need Redis protocol compatibility</li>
+                <li>You require advanced data structures (Lists, Sets, etc.)</li>
+                <li>You need Pub/Sub messaging</li>
+                <li>You require enterprise RBAC and compliance features</li>
+                <li>You need production-ready multi-node clustering (yet)</li>
+                <li>You need production-ready persistent storage beyond memory</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <div class="mt-8 flex gap-4">
+          <a href="/docs/what-is-pugdb" class="text-purple-400 hover:text-purple-300">← What is PugDB?</a>
+          <a href="/docs/how-pugdb-works" class="text-purple-400 hover:text-purple-300 ml-auto">How PugDB Works →</a>
+        </div>
+      </article>
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .prose {
+    color: rgb(209 213 219);
+  }
+  .prose h1, .prose h2, .prose h3 {
+    color: rgb(255 255 255);
+  }
+  .prose a {
+    color: rgb(196 181 253);
+  }
+  .prose a:hover {
+    color: rgb(167 139 250);
+  }
+  .prose strong {
+    color: rgb(255 255 255);
+    font-weight: 600;
+  }
+</style>
+

@@ -1,0 +1,211 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+---
+
+<BaseLayout title="How PugDB Works" description="Technical architecture and implementation details of PugDB's layered architecture">
+  <Header />
+
+  <main class="pt-20 min-h-screen bg-gray-900">
+    <div class="container mx-auto px-6 py-16">
+      <article class="max-w-4xl mx-auto prose prose-invert prose-lg">
+        <h1 class="text-5xl font-bold text-white mb-4">How PugDB Works</h1>
+
+        <p class="text-xl text-gray-300 mb-8">
+          PugDB is built on a <strong>modular, layered architecture</strong> that separates concerns and allows you to choose the right components for your specific needs. The system follows the principle of <strong>composition over inheritance</strong> with a <strong>minimal core and powerful extensions</strong>.
+        </p>
+
+        <section class="mb-12">
+          <h2 class="text-3xl font-bold text-white mb-4">Architecture Overview</h2>
+          <p class="text-gray-300 mb-4">PugDB's architecture consists of five distinct layers, each with specific responsibilities:</p>
+
+          <div class="bg-gray-800/60 rounded-xl p-6 border border-gray-700/50 mb-6">
+            <div class="space-y-4">
+              <div class="flex items-center gap-4">
+                <div class="w-3 h-3 rounded-full bg-pink-500"></div>
+                <div>
+                  <strong class="text-white">Application Layer</strong>
+                  <p class="text-gray-400 text-sm">CLI Tools, Shell, Migration</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-4 ml-4">
+                <div class="w-3 h-3 rounded-full bg-orange-500"></div>
+                <div>
+                  <strong class="text-white">Cloud Layer</strong>
+                  <p class="text-gray-400 text-sm">S3 Storage, Tiering, Edge</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-4 ml-8">
+                <div class="w-3 h-3 rounded-full bg-cyan-500"></div>
+                <div>
+                  <strong class="text-white">Distributed Layer</strong>
+                  <p class="text-gray-400 text-sm">Server, Client, Clustering</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-4 ml-12">
+                <div class="w-3 h-3 rounded-full bg-teal-500"></div>
+                <div>
+                  <strong class="text-white">Extensions Layer</strong>
+                  <p class="text-gray-400 text-sm">Storage Engines, QL, Monitoring</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-4 ml-16">
+                <div class="w-3 h-3 rounded-full bg-purple-500"></div>
+                <div>
+                  <strong class="text-white">Foundation Layer</strong>
+                  <p class="text-gray-400 text-sm">Core Abstractions, Memory Storage</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <p class="text-gray-300 mb-4">Each layer depends only on the layers below it, creating a clean dependency hierarchy. This strict layering ensures:</p>
+          <ul class="text-gray-300 space-y-2 list-disc list-inside">
+            <li><strong class="text-white">Clear Boundaries</strong>: Each layer has well-defined responsibilities</li>
+            <li><strong class="text-white">Testability</strong>: Layers can be tested independently</li>
+            <li><strong class="text-white">Flexibility</strong>: Components can be swapped or extended without affecting other layers</li>
+            <li><strong class="text-white">Maintainability</strong>: Changes are isolated to specific layers</li>
+          </ul>
+        </section>
+
+        <section class="mb-12">
+          <h2 class="text-3xl font-bold text-white mb-4">Foundation Layer</h2>
+          <p class="text-gray-300 mb-4">The foundation provides the core abstractions and basic memory storage.</p>
+
+          <div class="bg-gray-800/60 rounded-xl p-6 border border-gray-700/50 mb-4">
+            <h3 class="text-xl font-semibold text-white mb-3">Core Components</h3>
+            <ul class="text-gray-300 space-y-2 list-disc list-inside">
+              <li><strong class="text-white">f4kvs-core</strong>: Core abstractions, traits, and configuration (1,199 tests, 90%+ coverage)</li>
+              <li><strong class="text-white">f4kvs-ffi</strong>: Foreign function interface bindings</li>
+            </ul>
+          </div>
+
+          <div class="bg-green-900/20 rounded-xl p-4 border border-green-700/50">
+            <p class="text-green-300 text-sm"><strong>Status</strong>: ✅ Production Ready - 1,199 tests, 90%+ coverage</p>
+          </div>
+        </section>
+
+        <section class="mb-12">
+          <h2 class="text-3xl font-bold text-white mb-4">Extensions Layer</h2>
+          <p class="text-gray-300 mb-4">The extensions layer adds advanced capabilities on top of the foundation.</p>
+
+          <div class="bg-gray-800/60 rounded-xl p-6 border border-gray-700/50 mb-4">
+            <h3 class="text-xl font-semibold text-white mb-3">Core Components</h3>
+            <ul class="text-gray-300 space-y-2 list-disc list-inside">
+              <li><strong class="text-white">f4kvs-storage</strong>: Advanced persistent storage engines (813 tests, 80%+ coverage)</li>
+              <li><strong class="text-white">f4kvs-ttl</strong>: Time-to-live management</li>
+              <li><strong class="text-white">f4kvs-ql</strong>: Query language interface (856+ tests, 63% coverage) - Beta (Approaching Production)</li>
+              <li><strong class="text-white">f4kvs-observability</strong>: Monitoring and observability (Beta, 50-100% coverage)</li>
+            </ul>
+          </div>
+
+          <div class="bg-green-900/20 rounded-xl p-4 border border-green-700/50 mb-2">
+            <p class="text-green-300 text-sm"><strong>Storage Status</strong>: ✅ Production Ready - 813 tests, 80%+ coverage</p>
+          </div>
+          <div class="bg-yellow-900/20 rounded-xl p-4 border border-yellow-700/50">
+            <p class="text-yellow-300 text-sm"><strong>Query Language Status</strong>: 🟡 Beta (Approaching Production) - 856+ tests, 63% coverage</p>
+          </div>
+        </section>
+
+        <section class="mb-12">
+          <h2 class="text-3xl font-bold text-white mb-4">Distributed Layer</h2>
+          <p class="text-gray-300 mb-4">The distributed layer provides networking, clustering, and multi-node capabilities.</p>
+
+          <div class="bg-gray-800/60 rounded-xl p-6 border border-gray-700/50 mb-4">
+            <h3 class="text-xl font-semibold text-white mb-3">Core Components</h3>
+            <ul class="text-gray-300 space-y-2 list-disc list-inside">
+              <li><strong class="text-white">f4kvs-network</strong>: Network protocol implementation (109 tests, 90%+ coverage)</li>
+              <li><strong class="text-white">f4kvs-server</strong>: Server implementation</li>
+              <li><strong class="text-white">f4kvs-client</strong>: Client libraries</li>
+              <li><strong class="text-white">f4kvs-clustering</strong>: Clustering and consensus (588 tests, 30-70% coverage)</li>
+            </ul>
+          </div>
+
+          <div class="bg-green-900/20 rounded-xl p-4 border border-green-700/50">
+            <p class="text-green-300 text-sm"><strong>Status</strong>: ✅ Production Ready - Network (109 tests, 90%+ coverage), Clustering (588 tests, 30-70% coverage)</p>
+          </div>
+        </section>
+
+        <section class="mb-12">
+          <h2 class="text-3xl font-bold text-white mb-4">How Operations Work</h2>
+
+          <div class="mb-6">
+            <h3 class="text-2xl font-semibold text-white mb-3">Key-Value Operations</h3>
+            <p class="text-gray-300 mb-2">When you perform a basic operation like <code class="bg-gray-800 px-2 py-1 rounded text-purple-300">put</code> or <code class="bg-gray-800 px-2 py-1 rounded text-purple-300">get</code>:</p>
+            <ol class="text-gray-300 space-y-2 list-decimal list-inside">
+              <li><strong class="text-white">Request</strong>: Client sends operation request to server</li>
+              <li><strong class="text-white">Routing</strong>: Server routes request to appropriate storage engine</li>
+              <li><strong class="text-white">Storage Engine</strong>: Selected engine performs the operation</li>
+              <li><strong class="text-white">Compression</strong>: Optional compression applied (if configured)</li>
+              <li><strong class="text-white">Response</strong>: Result returned to client</li>
+            </ol>
+          </div>
+
+          <div class="mb-6">
+            <h3 class="text-2xl font-semibold text-white mb-3">Batch Operations</h3>
+            <p class="text-gray-300">Batch operations are optimized for efficiency with connection reuse, parallel processing, and atomic batch commits.</p>
+          </div>
+        </section>
+
+        <section class="mb-12">
+          <h2 class="text-3xl font-bold text-white mb-4">Architecture Principles</h2>
+
+          <div class="space-y-4">
+            <div class="bg-gray-800/60 rounded-xl p-6 border border-gray-700/50">
+              <h3 class="text-xl font-semibold text-white mb-2">Separation of Concerns</h3>
+              <p class="text-gray-300">Each layer has specific, non-overlapping responsibilities.</p>
+            </div>
+
+            <div class="bg-gray-800/60 rounded-xl p-6 border border-gray-700/50">
+              <h3 class="text-xl font-semibold text-white mb-2">Layered Dependencies</h3>
+              <p class="text-gray-300">Strict dependency rules ensure clean architecture with no circular dependencies.</p>
+            </div>
+
+            <div class="bg-gray-800/60 rounded-xl p-6 border border-gray-700/50">
+              <h3 class="text-xl font-semibold text-white mb-2">Composition over Inheritance</h3>
+              <p class="text-gray-300">Complex features built by composing simple ones with pluggable extensions.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="mb-12">
+          <h2 class="text-3xl font-bold text-white mb-4">Performance Optimizations</h2>
+
+          <ul class="text-gray-300 space-y-2 list-disc list-inside">
+            <li><strong class="text-white">Async I/O</strong>: Tokio for non-blocking operations and excellent concurrency</li>
+            <li><strong class="text-white">Memory Management</strong>: Optimized memory pools, zero-copy where possible</li>
+            <li><strong class="text-white">Batch Processing</strong>: Connection reuse, parallel processing, reduced network overhead</li>
+          </ul>
+        </section>
+
+        <div class="mt-8 flex gap-4">
+          <a href="/docs/why-pugdb" class="text-purple-400 hover:text-purple-300">← Why PugDB?</a>
+          <a href="/docs" class="text-purple-400 hover:text-purple-300 ml-auto">Back to Docs →</a>
+        </div>
+      </article>
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .prose {
+    color: rgb(209 213 219);
+  }
+  .prose h1, .prose h2, .prose h3 {
+    color: rgb(255 255 255);
+  }
+  .prose a {
+    color: rgb(196 181 253);
+  }
+  .prose a:hover {
+    color: rgb(167 139 250);
+  }
+  .prose strong {
+    color: rgb(255 255 255);
+    font-weight: 600;
+  }
+  .prose code {
+    font-family: 'Courier New', monospace;
+  }
+</style>
+

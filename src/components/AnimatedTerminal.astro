@@ -1,0 +1,251 @@
+---
+// Animated Terminal Component for Hero Section
+// Displays a read-only terminal that cycles through F4KVS demo commands
+---
+
+<div class="animated-terminal-container">
+  <div id="animated-terminal" class="animated-terminal"></div>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xterm@5.3.0/css/xterm.css" />
+
+<script>
+  // Load xterm.js from CDN
+  async function loadXTerm() {
+    if (window.Terminal && window.FitAddon) {
+      return { Terminal: window.Terminal, FitAddon: window.FitAddon };
+    }
+
+    // Load xterm.js
+    await new Promise((resolve) => {
+      const script1 = document.createElement('script');
+      script1.src = 'https://cdn.jsdelivr.net/npm/xterm@5.3.0/lib/xterm.js';
+      script1.onload = () => {
+        const script2 = document.createElement('script');
+        script2.src = 'https://cdn.jsdelivr.net/npm/xterm-addon-fit@0.8.0/lib/xterm-addon-fit.js';
+        script2.onload = resolve;
+        document.head.appendChild(script2);
+      };
+      document.head.appendChild(script1);
+    });
+
+    return { Terminal: window.Terminal, FitAddon: window.FitAddon };
+  }
+
+  // Demo sequence to cycle through
+  const demoSequence = [
+    {
+      command: "put user:1 '{\"name\":\"Alice\",\"age\":30}'",
+      output: "✓ Stored: user:1 = {\"name\":\"Alice\",\"age\":30}",
+      delay: 2000
+    },
+    {
+      command: "get user:1",
+      output: "user:1: {\"name\":\"Alice\",\"age\":30}",
+      delay: 2000
+    },
+    {
+      command: "scan user:",
+      output: "Found 1 key(s) with prefix \"user:\":\n  user:1",
+      delay: 2000
+    },
+    {
+      command: "sql SELECT * FROM users WHERE age > 25",
+      output: "Results (1 row(s)):\n  name | age\n  -----|-----\n  Alice| 30",
+      delay: 2500
+    },
+    {
+      command: "stats",
+      output: "Total Operations: 3\nPuts: 1\nGets: 1\nScans: 1\nTotal Keys: 1",
+      delay: 2000
+    }
+  ];
+
+  // Typing animation helper
+  function typeText(terminal, text, speed = 30) {
+    return new Promise((resolve) => {
+      let index = 0;
+      const interval = setInterval(() => {
+        if (index < text.length) {
+          terminal.write(text[index]);
+          index++;
+        } else {
+          clearInterval(interval);
+          resolve();
+        }
+      }, speed);
+    });
+  }
+
+  // Write text instantly (for output)
+  function writeText(terminal, text) {
+    terminal.writeln(text);
+  }
+
+  // Clear terminal and show prompt
+  function showPrompt(terminal) {
+    terminal.write('\r\n\x1b[36mf4kvs\x1b[0m > ');
+  }
+
+  // Run a single demo command
+  async function runDemo(terminal, demo, cycleIndex) {
+    // Clear previous content every 3 cycles to prevent overflow
+    if (cycleIndex % 3 === 0) {
+      terminal.clear();
+      terminal.writeln('\x1b[36mF4KVS Interactive Terminal\x1b[0m');
+      terminal.writeln('\x1b[90mType "help" for available commands\x1b[0m\n');
+    }
+
+    // Show prompt
+    showPrompt(terminal);
+    
+    // Type command
+    await typeText(terminal, demo.command, 50);
+    
+    // Wait a bit, then show output
+    await new Promise(resolve => setTimeout(resolve, 500));
+    terminal.writeln(''); // New line
+    
+    // Show output (instant for better UX)
+    const outputLines = demo.output.split('\n');
+    outputLines.forEach(line => {
+      if (line.trim()) {
+        terminal.writeln(`  \x1b[33m${line}\x1b[0m`);
+      }
+    });
+    
+    // Wait before next command
+    await new Promise(resolve => setTimeout(resolve, demo.delay));
+  }
+
+  // Main animation loop
+  async function startAnimation() {
+    const container = document.getElementById('animated-terminal');
+    if (!container) return;
+
+    // Load xterm.js
+    const { Terminal, FitAddon } = await loadXTerm();
+    if (!Terminal || !FitAddon) {
+      console.error('Failed to load xterm.js');
+      return;
+    }
+
+    const terminal = new Terminal({
+      theme: {
+        background: '#1e293b',
+        foreground: '#f1f5f9',
+        cursor: '#10b981',
+        selection: '#334155',
+        black: '#0f172a',
+        red: '#ef4444',
+        green: '#10b981',
+        yellow: '#f59e0b',
+        blue: '#3b82f6',
+        magenta: '#8b5cf6',
+        cyan: '#06b6d4',
+        white: '#f1f5f9',
+        brightBlack: '#475569',
+        brightRed: '#f87171',
+        brightGreen: '#34d399',
+        brightYellow: '#fbbf24',
+        brightBlue: '#60a5fa',
+        brightMagenta: '#a78bfa',
+        brightCyan: '#22d3ee',
+        brightWhite: '#ffffff'
+      },
+      fontSize: 13,
+      fontFamily: 'Monaco, Menlo, "Ubuntu Mono", monospace',
+      cursorBlink: true,
+      cursorStyle: 'block',
+      lineHeight: 1.2,
+      letterSpacing: 0.5,
+      rows: 20,
+      cols: 60,
+      disableStdin: true, // Read-only
+      scrollback: 50 // Limit history
+    });
+
+    const fitAddon = new FitAddon.FitAddon();
+    terminal.loadAddon(fitAddon);
+    terminal.open(container);
+    
+    // Fit to container
+    fitAddon.fit();
+
+    // Initial welcome message
+    terminal.writeln('\x1b[36mF4KVS Interactive Terminal\x1b[0m');
+    terminal.writeln('\x1b[90mType "help" for available commands\x1b[0m\n');
+
+    let cycleIndex = 0;
+    let isPaused = false;
+
+    // Pause when tab is not visible
+    document.addEventListener('visibilitychange', () => {
+      isPaused = document.hidden;
+    });
+
+    // Animation loop
+    async function loop() {
+      if (isPaused) {
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        loop();
+        return;
+      }
+
+      for (const demo of demoSequence) {
+        if (isPaused) break;
+        await runDemo(terminal, demo, cycleIndex);
+      }
+
+      cycleIndex++;
+      // Small pause before restarting cycle
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      loop();
+    }
+
+    // Start animation after a short delay
+    setTimeout(() => {
+      loop();
+    }, 1000);
+  }
+
+  // Start when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', startAnimation);
+  } else {
+    startAnimation();
+  }
+</script>
+
+<style>
+  .animated-terminal-container {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: #1e293b;
+  }
+
+  .animated-terminal {
+    width: 100%;
+    height: 400px;
+    padding: 1rem;
+    background: #1e293b;
+  }
+
+  /* Responsive: Hide on mobile, show on larger screens */
+  @media (max-width: 768px) {
+    .animated-terminal-container {
+      display: none;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .animated-terminal {
+      height: 450px;
+    }
+  }
+</style>

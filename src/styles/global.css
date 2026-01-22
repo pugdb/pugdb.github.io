@@ -1,0 +1,80 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+@layer base {
+  :root {
+    --gradient-purple: #6B46C1;
+    --gradient-teal: #0891B2;
+    --gradient-cyan: #06B6D4;
+    --gradient-orange: #F97316;
+    --gradient-pink: #EC4899;
+  }
+
+  html {
+    color-scheme: dark;
+  }
+
+  body {
+    @apply bg-gray-900 text-gray-100 font-sans antialiased;
+  }
+}
+
+@layer utilities {
+  .gradient-hero {
+    background: linear-gradient(135deg,
+      var(--gradient-purple) 0%,
+      var(--gradient-teal) 25%,
+      var(--gradient-cyan) 50%,
+      var(--gradient-orange) 75%,
+      var(--gradient-pink) 100%);
+  }
+
+  .gradient-waves {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .gradient-waves::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background:
+      radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 40% 80%, rgba(255, 255, 255, 0.05) 0%, transparent 50%);
+    animation: wave 20s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  @keyframes wave {
+    0%, 100% {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+    }
+    50% {
+      transform: translateY(-20px) scale(1.1);
+      opacity: 0.8;
+    }
+  }
+
+  .text-glow {
+    text-shadow:
+      0 0 10px rgba(255, 255, 255, 0.5),
+      0 0 20px rgba(236, 72, 153, 0.4),
+      0 0 30px rgba(249, 115, 22, 0.3),
+      0 0 40px rgba(6, 182, 212, 0.2);
+  }
+
+  .backdrop-blur-nav {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    background-color: rgba(17, 24, 39, 0.7);
+  }
+}
+

@@ -1,0 +1,132 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+---
+
+<BaseLayout title="Features" description="Discover the powerful features of PugDB - performance, modularity, and Rust-native architecture.">
+  <Header />
+
+  <main class="pt-20 min-h-screen bg-gray-900">
+    <div class="container mx-auto px-6 py-16">
+      <div class="max-w-4xl mx-auto">
+        <h1 class="text-5xl font-bold text-white mb-4">Features</h1>
+        <p class="text-xl text-gray-400 mb-12">
+          PugDB delivers exceptional performance with a modular architecture designed for modern applications.
+        </p>
+
+        <!-- Performance Section -->
+        <section class="mb-16">
+          <h2 class="text-3xl font-bold text-white mb-6">⚡ Performance</h2>
+          <div class="bg-gray-800/60 rounded-xl p-8 border border-gray-700/50">
+            <ul class="space-y-4 text-gray-300">
+              <li class="flex items-start">
+                <span class="text-green-400 mr-3">✓</span>
+                <span><strong class="text-white">5.8x faster than PostgreSQL</strong> - Verified YCSB benchmarks (4.3x - 7.9x range, single-threaded sequential workload)</span>
+              </li>
+              <li class="flex items-start">
+                <span class="text-green-400 mr-3">✓</span>
+                <span><strong class="text-white">3.5x faster than ScyllaDB</strong> - Verified YCSB benchmarks (2.3x - 4.4x range, single-threaded sequential workload)</span>
+              </li>
+              <li class="flex items-start">
+                <span class="text-green-400 mr-3">✓</span>
+                <span><strong class="text-white">Sub-millisecond latency</strong> - P50: 0.029-0.072ms, P99: 0.076-0.272ms</span>
+              </li>
+              <li class="flex items-start">
+                <span class="text-green-400 mr-3">✓</span>
+                <span><strong class="text-white">Excellent concurrency</strong> - Scales well up to 32 threads</span>
+              </li>
+              <li class="flex items-start">
+                <span class="text-green-400 mr-3">✓</span>
+                <span><strong class="text-white">Optimized batch operations</strong> - Connection reuse and parallel processing</span>
+              </li>
+            </ul>
+            <p class="text-gray-400 text-sm mt-6 italic">
+              *Benchmark Methodology: Results from single-threaded sequential YCSB workloads (last updated: January 2026). Both PugDB and competitors tested identically. Real-world performance with concurrent workloads may differ.*
+            </p>
+          </div>
+        </section>
+
+        <!-- Storage Engines Section -->
+        <section class="mb-16">
+          <h2 class="text-3xl font-bold text-white mb-6">💾 Storage Engines</h2>
+          <div class="bg-gray-800/60 rounded-xl p-8 border border-gray-700/50">
+            <div class="space-y-6">
+              <div>
+                <h3 class="text-xl font-semibold text-white mb-2">Memory Storage (GA) - Production Ready</h3>
+                <p class="text-gray-400">HashMap and BTreeMap backends optimized for high-performance in-memory operations. 813 tests, 80%+ coverage.</p>
+              </div>
+              <div>
+                <h3 class="text-xl font-semibold text-white mb-2">LSM-Tree Storage (GA) - Production Ready</h3>
+                <p class="text-gray-400">Write-optimized persistent storage engine with automatic compaction, crash recovery, and WAL. 51 unit tests + integration tests.</p>
+              </div>
+              <div>
+                <h3 class="text-xl font-semibold text-white mb-2">Partitioned Storage (GA) - Production Ready</h3>
+                <p class="text-gray-400">Horizontally scalable storage with partition management, stress-tested concurrency, and comprehensive crash recovery. 6+ test suites.</p>
+              </div>
+              <div>
+                <h3 class="text-xl font-semibold text-white mb-2">File System Storage</h3>
+                <p class="text-gray-400">Not available in v2 (intentionally not migrated from v1).</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Architecture Section -->
+        <section class="mb-16">
+          <h2 class="text-3xl font-bold text-white mb-6">🏗️ Modular Architecture</h2>
+          <div class="bg-gray-800/60 rounded-xl p-8 border border-gray-700/50">
+            <p class="text-gray-300 mb-4">
+              PugDB follows a clean, layered architecture with five distinct layers:
+            </p>
+            <ul class="space-y-3 text-gray-300">
+              <li class="flex items-start">
+                <span class="text-purple-400 mr-3">•</span>
+                <span><strong class="text-white">Foundation Layer</strong> - Core abstractions and memory storage</span>
+              </li>
+              <li class="flex items-start">
+                <span class="text-teal-400 mr-3">•</span>
+                <span><strong class="text-white">Extensions Layer</strong> - Advanced storage engines, query language, monitoring</span>
+              </li>
+              <li class="flex items-start">
+                <span class="text-cyan-400 mr-3">•</span>
+                <span><strong class="text-white">Distributed Layer</strong> - Server, client, and clustering capabilities</span>
+              </li>
+              <li class="flex items-start">
+                <span class="text-orange-400 mr-3">•</span>
+                <span><strong class="text-white">Cloud Layer</strong> - S3-compatible storage and intelligent tiering</span>
+              </li>
+              <li class="flex items-start">
+                <span class="text-pink-400 mr-3">•</span>
+                <span><strong class="text-white">Application Layer</strong> - CLI tools and utilities</span>
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- Additional Features -->
+        <section class="mb-16">
+          <h2 class="text-3xl font-bold text-white mb-6">🔧 Additional Features</h2>
+          <div class="grid md:grid-cols-2 gap-6">
+            <div class="bg-gray-800/60 rounded-xl p-6 border border-gray-700/50">
+              <h3 class="text-xl font-semibold text-white mb-2">Compression Support</h3>
+              <p class="text-gray-400">LZ4, Zstd, Gzip, and Snappy compression algorithms for efficient data storage.</p>
+            </div>
+            <div class="bg-gray-800/60 rounded-xl p-6 border border-gray-700/50">
+              <h3 class="text-xl font-semibold text-white mb-2">Monitoring & Metrics</h3>
+              <p class="text-gray-400">Prometheus metrics, health checks, and performance monitoring hooks.</p>
+            </div>
+            <div class="bg-gray-800/60 rounded-xl p-6 border border-gray-700/50">
+              <h3 class="text-xl font-semibold text-white mb-2">Query Language</h3>
+              <p class="text-gray-400">Beta (Approaching Production) SQL support with 856+ tests passing. Window functions (100% GA), JOINs (100% GA), subqueries (95% GA), query optimization (100%), and transactions (90%).</p>
+            </div>
+            <div class="bg-gray-800/60 rounded-xl p-6 border border-gray-700/50">
+              <h3 class="text-xl font-semibold text-white mb-2">Privacy-First</h3>
+              <p class="text-gray-400">Encryption support, audit logging, and offline-first architecture.</p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+</BaseLayout>
+

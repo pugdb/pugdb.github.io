@@ -1,0 +1,25 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+---
+
+<BaseLayout title="Interactive Showcase" description="Experience F4KVS with our interactive terminal demo featuring WASM execution.">
+  <Header />
+  
+  <!-- Full-width iframe for showcase -->
+  <div class="min-h-screen bg-gray-900">
+    <iframe
+      src="/showcase/index.html"
+      class="w-full h-screen border-0"
+      title="F4KVS Interactive Showcase"
+      allow="clipboard-read; clipboard-write"
+    ></iframe>
+  </div>
+</BaseLayout>
+
+<style>
+  /* Ensure iframe takes full viewport */
+  iframe {
+    display: block;
+  }
+</style>

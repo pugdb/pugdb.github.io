@@ -1,0 +1,30 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+---
+
+<BaseLayout title="Blog" description="Latest news and updates about PugDB">
+  <Header />
+
+  <main class="pt-20 min-h-screen bg-gray-900">
+    <div class="container mx-auto px-6 py-16">
+      <div class="max-w-4xl mx-auto">
+        <h1 class="text-5xl font-bold text-white mb-4">Blog</h1>
+        <p class="text-xl text-gray-400 mb-12">
+          Latest news, updates, and insights about PugDB.
+        </p>
+
+        <div class="space-y-8">
+          <div class="bg-gray-800/60 rounded-xl p-8 border border-gray-700/50">
+            <div class="text-sm text-gray-400 mb-2">Coming Soon</div>
+            <h2 class="text-2xl font-bold text-white mb-3">Blog Posts Coming Soon</h2>
+            <p class="text-gray-300">
+              We're working on bringing you the latest updates, performance insights, and technical deep-dives about PugDB. Check back soon!
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</BaseLayout>
+

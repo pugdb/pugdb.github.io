@@ -1,0 +1,20 @@
+{
+  "name": "f4kvs-wasm-poc",
+  "type": "module",
+  "collaborators": [
+    "Baptiste Boussemart <contact@f4kvs.dev>"
+  ],
+  "description": "F4KVS WASM Proof of Concept - Minimal WASM integration for showcase",
+  "version": "0.1.0",
+  "license": "MIT OR Apache-2.0",
+  "files": [
+    "f4kvs_wasm_poc_bg.wasm",
+    "f4kvs_wasm_poc.js",
+    "f4kvs_wasm_poc.d.ts"
+  ],
+  "main": "f4kvs_wasm_poc.js",
+  "types": "f4kvs_wasm_poc.d.ts",
+  "sideEffects": [
+    "./snippets/*"
+  ]
+}
