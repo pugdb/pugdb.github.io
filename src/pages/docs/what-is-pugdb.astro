@@ -15,13 +15,17 @@ import Header from '../../components/Header.astro';
           <strong>PugDB</strong> is a <strong>privacy-first, Rust-native key-value store</strong> designed for high-performance applications. Built with modern Rust and optimized for speed, reliability, and data sovereignty.
         </p>
 
+        <div class="bg-yellow-900/20 rounded-xl p-4 border border-yellow-700/50 mb-8">
+          <p class="text-yellow-300 text-sm"><strong>Beta Status</strong>: PugDB is currently in beta. Core features are stable and well-tested, but the project is still under active development. Some advanced features may change before the production release.</p>
+        </div>
+
         <section class="mb-12">
           <h2 class="text-3xl font-bold text-white mb-4">Core Definition</h2>
           <p class="text-gray-300 mb-4">PugDB is a high-performance key-value storage system that provides:</p>
           <ul class="text-gray-300 space-y-2 list-disc list-inside">
             <li><strong class="text-white">Verified Performance</strong>: 5.8x faster than PostgreSQL, 3.5x faster than ScyllaDB (YCSB benchmarks, single-threaded sequential workload)</li>
             <li><strong class="text-white">Low Latency</strong>: P50 latency 0.029-0.072ms, P99 latency 0.076-0.272ms</li>
-            <li><strong class="text-white">Production-Ready Core</strong>: 5,454 tests passing (100% pass rate), 63.41% code coverage (as of January 2026)</li>
+            <li><strong class="text-white">Stable Core (Beta)</strong>: 5,454 tests passing (100% pass rate), 63.41% code coverage (as of January 2026)</li>
             <li><strong class="text-white">Privacy-First Design</strong>: Built with encryption support, audit logging, and offline-first capabilities</li>
             <li><strong class="text-white">Rust-Native</strong>: Leverages Rust's memory safety and modern async/await patterns</li>
           </ul>
@@ -46,11 +50,23 @@ import Header from '../../components/Header.astro';
           </div>
 
           <div class="mb-6">
-            <h3 class="text-2xl font-semibold text-white mb-3">Production-Ready Core</h3>
-            <p class="text-gray-300 mb-2">The foundation of PugDB is production-ready and battle-tested:</p>
+            <h3 class="text-2xl font-semibold text-white mb-3">Multi-Language Support via FFI</h3>
+            <p class="text-gray-300 mb-2">While PugDB is built in Rust, it can be used from any programming language through C-compatible FFI bindings:</p>
+            <ul class="text-gray-300 space-y-1 list-disc list-inside">
+              <li><strong class="text-white">C/C++</strong>: Direct C-compatible API for native integration</li>
+              <li><strong class="text-white">Python, Go, Node.js</strong>: Language bindings can be built on top of the C FFI</li>
+              <li><strong class="text-white">Zero Overhead</strong>: FFI bindings provide direct access to PugDB's core functionality</li>
+              <li><strong class="text-white">Cross-Platform</strong>: Works on all platforms where Rust compiles</li>
+            </ul>
+            <p class="text-gray-400 text-sm mt-2">The FFI crate (f4kvs-ffi) provides a stable C API that enables integration with virtually any programming language, making PugDB accessible beyond the Rust ecosystem.</p>
+          </div>
+
+          <div class="mb-6">
+            <h3 class="text-2xl font-semibold text-white mb-3">Stable Core (Beta)</h3>
+            <p class="text-gray-300 mb-2">The foundation of PugDB is stable and well-tested:</p>
             <ul class="text-gray-300 space-y-1 list-disc list-inside">
               <li>Core key-value operations (get, put, delete, exists)</li>
-              <li>Memory storage engines (HashMap, BTreeMap) - <strong class="text-white">Production Ready (GA)</strong></li>
+              <li>Memory storage engines (HashMap, BTreeMap) - <strong class="text-white">Beta - Well Tested</strong></li>
               <li>Graceful shutdown and recovery</li>
               <li>Memory leak detection</li>
               <li>Monitoring hooks and metrics collection</li>
@@ -87,9 +103,9 @@ import Header from '../../components/Header.astro';
           <div class="mb-6">
             <h3 class="text-2xl font-semibold text-white mb-3">Multiple Storage Engines</h3>
             <ul class="text-gray-300 space-y-2 list-disc list-inside">
-              <li><strong class="text-white">Memory Storage (GA)</strong>: HashMap and BTreeMap backends - Production Ready (813 tests, 80%+ coverage)</li>
-              <li><strong class="text-white">LSM-Tree Storage (GA)</strong>: Production Ready - 51 unit tests + integration tests, comprehensive crash recovery</li>
-              <li><strong class="text-white">Partitioned Storage (GA)</strong>: Production Ready - Extensive integration tests, 6+ test suites, stress-tested concurrency</li>
+              <li><strong class="text-white">Memory Storage</strong>: HashMap and BTreeMap backends - Beta - Well Tested (813 tests, 80%+ coverage)</li>
+              <li><strong class="text-white">LSM-Tree Storage</strong>: Beta - Well Tested - 51 unit tests + integration tests, comprehensive crash recovery</li>
+              <li><strong class="text-white">Partitioned Storage</strong>: Beta - Well Tested - Extensive integration tests, 6+ test suites, stress-tested concurrency</li>
             </ul>
           </div>
 
@@ -130,7 +146,7 @@ import Header from '../../components/Header.astro';
           <ul class="text-gray-300 space-y-2 list-disc list-inside">
             <li><strong class="text-white">Test Coverage</strong>: 5,454 tests passing (100% pass rate)</li>
             <li><strong class="text-white">Code Coverage</strong>: 63.41% overall (regions: 63.41%, functions: 63.11%, lines: 62.83%) - as of January 2026</li>
-            <li><strong class="text-white">Production Components</strong>: Core, storage, network, and clustering layers are production-ready</li>
+            <li><strong class="text-white">Stable Components (Beta)</strong>: Core, storage, network, and clustering layers are stable and well-tested</li>
             <li><strong class="text-white">Beta Components</strong>: Query language (856+ tests) and observability approaching production</li>
           </ul>
         </section>

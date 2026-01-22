@@ -64,6 +64,7 @@ import Header from '../../components/Header.astro';
             <li><strong class="text-white">Excellent Concurrency</strong>: Scales well up to 32 threads</li>
             <li><strong class="text-white">Memory Efficiency</strong>: Optimized memory pools and resource management</li>
             <li><strong class="text-white">Batch Operations</strong>: Highly optimized bulk operations with connection reuse</li>
+            <li><strong class="text-white">Cost Efficiency</strong>: Higher performance means you can handle more operations with fewer resources, reducing infrastructure costs and operational expenses</li>
           </ul>
         </section>
 
@@ -89,9 +90,9 @@ import Header from '../../components/Header.astro';
           </div>
 
           <div class="mb-6">
-            <h3 class="text-2xl font-semibold text-white mb-3">Rust-Native Integration</h3>
-            <p class="text-gray-300 mb-2"><strong class="text-white">The Problem</strong>: Using storage solutions from other languages in Rust applications: FFI overhead and complexity, type system mismatches, limited integration options, performance penalties.</p>
-            <p class="text-gray-300"><strong class="text-white">PugDB's Solution</strong>: Native Rust implementation with zero FFI overhead, type safety, seamless integration, and optimal performance.</p>
+            <h3 class="text-2xl font-semibold text-white mb-3">Rust-Native Integration & Multi-Language Support</h3>
+            <p class="text-gray-300 mb-2"><strong class="text-white">The Problem</strong>: Using storage solutions from other languages in Rust applications: FFI overhead and complexity, type system mismatches, limited integration options, performance penalties. For non-Rust developers, finding high-performance storage with good language bindings can be challenging.</p>
+            <p class="text-gray-300"><strong class="text-white">PugDB's Solution</strong>: Native Rust implementation with zero FFI overhead for Rust developers, providing type safety, seamless integration, and optimal performance. For developers using other languages (Python, Go, C++, Node.js, etc.), PugDB provides C-compatible FFI bindings that enable integration from virtually any programming language, making high-performance storage accessible to everyone.</p>
           </div>
         </section>
 
@@ -102,13 +103,13 @@ import Header from '../../components/Header.astro';
             <div class="bg-gray-800/60 rounded-xl p-6 border border-gray-700/50">
               <h3 class="text-xl font-semibold text-white mb-2">Single-Server High-Performance Caching</h3>
               <p class="text-gray-300 mb-2">Ideal for session storage, application-level caching, real-time data processing, and high-frequency read/write workloads.</p>
-              <p class="text-gray-400 text-sm">Why PugDB: 5.8x faster than PostgreSQL, 3.5x faster than ScyllaDB (single-threaded sequential workload), sub-millisecond latency (P50: 0.029-0.072ms), production-ready memory storage, excellent concurrency support.</p>
+              <p class="text-gray-400 text-sm">Why PugDB: 5.8x faster than PostgreSQL, 3.5x faster than ScyllaDB (single-threaded sequential workload), sub-millisecond latency (P50: 0.029-0.072ms), stable memory storage (beta), excellent concurrency support, and lower resource consumption leading to reduced infrastructure costs.</p>
             </div>
 
             <div class="bg-gray-800/60 rounded-xl p-6 border border-gray-700/50">
               <h3 class="text-xl font-semibold text-white mb-2">Edge Computing and IoT</h3>
               <p class="text-gray-300 mb-2">Ideal for edge device local storage, IoT data collection and caching, offline-first applications, and resource-constrained environments.</p>
-              <p class="text-gray-400 text-sm">Why PugDB: Small memory footprint, efficient resource usage, privacy-focused design, offline-first architecture.</p>
+              <p class="text-gray-400 text-sm">Why PugDB: Small memory footprint, efficient resource usage, privacy-focused design, offline-first architecture, and cost-effective operation due to lower resource requirements.</p>
             </div>
 
             <div class="bg-gray-800/60 rounded-xl p-6 border border-gray-700/50">
@@ -118,9 +119,9 @@ import Header from '../../components/Header.astro';
             </div>
 
             <div class="bg-gray-800/60 rounded-xl p-6 border border-gray-700/50">
-              <h3 class="text-xl font-semibold text-white mb-2">Rust-Native Applications</h3>
-              <p class="text-gray-300 mb-2">Ideal for applications already built in Rust, high-performance Rust services, systems requiring memory safety, and modern async Rust applications.</p>
-              <p class="text-gray-400 text-sm">Why PugDB: Native Rust implementation, zero FFI overhead, type-safe integration, idiomatic Rust APIs.</p>
+              <h3 class="text-xl font-semibold text-white mb-2">Rust-Native Applications & Multi-Language Projects</h3>
+              <p class="text-gray-300 mb-2">Ideal for applications built in Rust (native integration) or other languages (via FFI), high-performance services, systems requiring memory safety, and modern async applications.</p>
+              <p class="text-gray-400 text-sm">Why PugDB: Native Rust implementation with zero FFI overhead for Rust developers, plus C-compatible FFI bindings for Python, Go, C++, Node.js, and other languages. Type-safe integration, idiomatic APIs, and cross-language compatibility.</p>
             </div>
           </div>
         </section>
@@ -138,7 +139,7 @@ import Header from '../../components/Header.astro';
                 <li>You're building in Rust</li>
                 <li>You need offline-first capabilities</li>
                 <li>Low latency is critical</li>
-                <li>You want production-ready core features</li>
+                <li>You want stable core features (beta)</li>
               </ul>
             </div>
 
@@ -149,8 +150,8 @@ import Header from '../../components/Header.astro';
                 <li>You require advanced data structures (Lists, Sets, etc.)</li>
                 <li>You need Pub/Sub messaging</li>
                 <li>You require enterprise RBAC and compliance features</li>
-                <li>You need production-ready multi-node clustering (yet)</li>
-                <li>You need production-ready persistent storage beyond memory</li>
+                <li>You need production-ready multi-node clustering (still in beta)</li>
+                <li>You need production-ready persistent storage beyond memory (still in beta)</li>
               </ul>
             </div>
           </div>
