@@ -17,7 +17,7 @@ export const NAV_ITEMS = [
 export const FEATURES = [
   {
     title: 'Lightning Fast',
-    description: '5.8x faster than PostgreSQL, 3.5x faster than ScyllaDB. Verified YCSB benchmarks with sub-millisecond latency.',
+    description: '4–8x faster than PostgreSQL in YCSB benchmarks, with sub-millisecond P95 latency.',
     icon: '⚡',
     color: 'from-yellow-400 to-orange-500',
   },

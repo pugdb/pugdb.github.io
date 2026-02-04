@@ -278,14 +278,14 @@ async function runDemo(demoName) {
             if (terminal) {
                 terminal.writeln(`\x1b[31mUnknown demo: ${demoName}\x1b[0m`);
                 terminal.prompt();
-            }
+        }
     }
 }
 
 function updateDemoInfo(demoName) {
     const title = document.getElementById('demo-title');
     const description = document.getElementById('demo-description');
-    
+        
     // Skip if UI elements don't exist (e.g., in terminal-only mode)
     if (!title || !description) {
         return;
@@ -298,7 +298,7 @@ function updateDemoInfo(demoName) {
         },
         'performance': {
             title: 'Performance Showcase',
-            desc: 'See real benchmarks running in your browser - 1.5M-2.2M operations per second!'
+            desc: 'YCSB: 4–8x faster than PostgreSQL, 17K–28K ops/sec, sub-ms latency.'
         },
         'sql': {
             title: 'SQL on Key-Value Store',
@@ -317,7 +317,7 @@ function updateDemoInfo(demoName) {
 
 async function handleF4KVSCommand(detail) {
     if (!terminal) return;
-    
+
     const { command, args, fullLine } = detail;
     
     // Try WASM first if available - create instance if needed
@@ -651,8 +651,6 @@ async function handleWASMCommand(command, args, db, terminal) {
 }
 
 async function handleSQLQuery(query) {
-    if (!terminal) return;
-    
     // Try WASM first if available - create instance if needed
     let wasmInstance = window.getWASMInstance ? window.getWASMInstance() : null;
     if (!wasmInstance && window.createWASMInstance) {

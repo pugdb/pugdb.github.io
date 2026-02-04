@@ -17,7 +17,7 @@
 - ⚡ **5.8x faster than PostgreSQL, 3.5x faster than ScyllaDB** (verified YCSB benchmarks)
 - 🦀 **Built in Rust** with async/await, memory safety, and modern patterns
 - 🧩 **Modular architecture** with pluggable storage engines (Memory, LSM-Tree, Partitioned)
-- ✅ **Production-ready core** with 5,454 tests passing and 63%+ code coverage
+- ✅ **Production-ready core** with 5,456 tests passing and 62%+ code coverage
 - 🔒 **Privacy-first design** with encryption support, audit logging, and offline-first capabilities
 - 📊 **SQL query language** (beta) with window functions, JOINs, and transactions
 - 📈 **Sub-millisecond latency**: P50 0.029-0.072ms, P99 0.076-0.272ms

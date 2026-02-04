@@ -30,7 +30,7 @@ If you have VS Code with the Live Server extension, simply right-click on `index
 
 - **Interactive Terminal**: Full terminal emulator using xterm.js
 - **Zero-Config Demo**: Shows automatic system detection and configuration
-- **Performance Demo**: Simulated benchmarks with realistic numbers
+- **Performance Demo**: Simulated benchmarks with realistic numbers. Real server benchmarks (YCSB) show PugDB 4–8x faster than PostgreSQL with sub-millisecond P95; see repository docs for methodology.
 - **SQL Demo**: Demonstrates SQL queries on key-value store
 - **Simulated PugDB**: JavaScript simulation layer that mimics PugDB API
 
