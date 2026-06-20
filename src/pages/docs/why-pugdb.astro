@@ -1,6 +1,9 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Header from '../../components/Header.astro';
+import { PUBLIC_METRICS, metricsCollectedLabel, benchmarksFresh } from '../../config/metrics';
+
+const benchWhen = benchmarksFresh() ? metricsCollectedLabel() : 'January 2026';
 ---
 
 <BaseLayout title="Why PugDB?" description="Discover why PugDB is needed - performance advantages, key differentiators, and problems it solves">
@@ -34,8 +37,8 @@ import Header from '../../components/Header.astro';
                 <tr class="border-b border-gray-800">
                   <td class="py-3"><strong class="text-white">PugDB</strong></td>
                   <td class="py-3"><strong class="text-green-400">16,777-30,389</strong></td>
-                  <td class="py-3"><strong class="text-green-400">0.029-0.072ms</strong></td>
-                  <td class="py-3"><strong class="text-green-400">0.076-0.272ms</strong></td>
+                  <td class="py-3"><strong class="text-green-400">{PUBLIC_METRICS.latency_p50_min}–{PUBLIC_METRICS.latency_p50_max}ms</strong></td>
+                  <td class="py-3"><strong class="text-green-400">{PUBLIC_METRICS.latency_p99_min}–{PUBLIC_METRICS.latency_p99_max}ms</strong></td>
                   <td class="py-3"><strong class="text-green-400">Baseline</strong></td>
                 </tr>
                 <tr class="border-b border-gray-800">
@@ -43,24 +46,24 @@ import Header from '../../components/Header.astro';
                   <td class="py-3">3,491-4,695</td>
                   <td class="py-3">0.195-0.270ms</td>
                   <td class="py-3">0.391-0.487ms</td>
-                  <td class="py-3"><strong class="text-red-400">4.3x-7.9x slower</strong></td>
+                  <td class="py-3"><strong class="text-red-400">{PUBLIC_METRICS.postgres_speedup_min}x–{PUBLIC_METRICS.postgres_speedup_max}x slower</strong></td>
                 </tr>
                 <tr>
                   <td class="py-3">ScyllaDB</td>
                   <td class="py-3">6,741-7,681</td>
                   <td class="py-3">0.138-0.144ms</td>
                   <td class="py-3">0.176-0.211ms</td>
-                  <td class="py-3"><strong class="text-red-400">2.3x-4.4x slower</strong></td>
+                  <td class="py-3"><strong class="text-red-400">{PUBLIC_METRICS.scylla_speedup_min}x–{PUBLIC_METRICS.scylla_speedup_max}x slower</strong></td>
                 </tr>
               </tbody>
             </table>
-            <p class="text-gray-400 text-sm mt-4">* YCSB benchmark results with proper isolation and statistical validation (last updated: January 2026). Results from single-threaded sequential workloads. Both PugDB and competitors tested identically. Real-world performance with concurrent workloads may differ.</p>
+            <p class="text-gray-400 text-sm mt-4">* {PUBLIC_METRICS.methodology}. Last updated: {benchWhen}. Quality metrics: {metricsCollectedLabel()} (commit {PUBLIC_METRICS.git_commit}). Real-world performance may differ.</p>
           </div>
 
           <p class="text-gray-300 mb-4">PugDB's verified performance advantages include:</p>
           <ul class="text-gray-300 space-y-2 list-disc list-inside">
-            <li><strong class="text-white">Consistent Low Latency</strong>: P50 latency 0.029-0.072ms, P99 latency 0.076-0.272ms</li>
-            <li><strong class="text-white">Superior Throughput</strong>: 5.8x faster than PostgreSQL, 3.5x faster than ScyllaDB on average (single-threaded sequential workload)</li>
+            <li><strong class="text-white">Consistent Low Latency</strong>: P50 latency {PUBLIC_METRICS.latency_p50_min}–{PUBLIC_METRICS.latency_p50_max}ms, P99 latency {PUBLIC_METRICS.latency_p99_min}–{PUBLIC_METRICS.latency_p99_max}ms</li>
+            <li><strong class="text-white">Superior Throughput</strong>: {PUBLIC_METRICS.postgres_speedup_avg}x faster than PostgreSQL, {PUBLIC_METRICS.scylla_speedup_avg}x faster than ScyllaDB on average</li>
             <li><strong class="text-white">Excellent Concurrency</strong>: Scales well up to 32 threads</li>
             <li><strong class="text-white">Memory Efficiency</strong>: Optimized memory pools and resource management</li>
             <li><strong class="text-white">Batch Operations</strong>: Highly optimized bulk operations with connection reuse</li>

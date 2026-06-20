@@ -5,6 +5,12 @@ import Hero from '../components/Hero.astro';
 import TerminalDemo from '../components/TerminalDemo.astro';
 import FeatureCard from '../components/FeatureCard.astro';
 import { FEATURES } from '../config/constants';
+import { PUBLIC_METRICS, metricsCollectedLabel, postgresSpeedupRange, benchmarksFresh } from '../config/metrics';
+
+const testsLabel = PUBLIC_METRICS.tests_total.toLocaleString('en-US');
+const benchNote = benchmarksFresh()
+  ? `Benchmarks refreshed ${metricsCollectedLabel()} (commit ${PUBLIC_METRICS.git_commit}).`
+  : `Benchmarks carried forward from Jan 2026 baseline; quality metrics from ${metricsCollectedLabel()} (commit ${PUBLIC_METRICS.git_commit}).`;
 ---
 
 <BaseLayout title="Home" description="Blazing-fast modular key-value store that adapts to anything.">
@@ -53,30 +59,38 @@ import { FEATURES } from '../config/constants';
   <!-- Stats Section -->
   <section class="py-20 bg-gray-800/50">
     <div class="container mx-auto px-6">
-      <div class="grid md:grid-cols-3 gap-8 text-center max-w-4xl mx-auto">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center max-w-5xl mx-auto">
         <div>
           <div class="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500 mb-2">
-            4–8x
+            {postgresSpeedupRange()}
           </div>
           <div class="text-gray-400 text-lg">Faster than PostgreSQL</div>
-          <p class="text-gray-500 text-xs mt-2">YCSB A/B/C/D, 10K records, 4 workers</p>
+          <p class="text-gray-500 text-xs mt-2">YCSB avg {PUBLIC_METRICS.postgres_speedup_avg}x</p>
         </div>
         <div>
           <div class="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500 mb-2">
-            3.5x
+            {PUBLIC_METRICS.scylla_speedup_avg}x
           </div>
           <div class="text-gray-400 text-lg">Faster than ScyllaDB</div>
-          <p class="text-gray-500 text-xs mt-2">Scylla comparison being improved</p>
+          <p class="text-gray-500 text-xs mt-2">{PUBLIC_METRICS.scylla_speedup_min}–{PUBLIC_METRICS.scylla_speedup_max}x range</p>
         </div>
         <div>
           <div class="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-pink-500 mb-2">
-            5,456
+            {testsLabel}
           </div>
-          <div class="text-gray-400 text-lg">Tests Passing</div>
+          <div class="text-gray-400 text-lg">Automated Tests</div>
+          <p class="text-gray-500 text-xs mt-2">Server monorepo crates</p>
+        </div>
+        <div>
+          <div class="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-500 mb-2">
+            {PUBLIC_METRICS.clustering_tests.toLocaleString('en-US')}
+          </div>
+          <div class="text-gray-400 text-lg">Clustering Tests</div>
+          <p class="text-gray-500 text-xs mt-2">Raft, HMLC, failover</p>
         </div>
       </div>
-      <p class="text-gray-500 text-sm mt-6 text-center max-w-2xl mx-auto">
-        *Benchmark Methodology: YCSB A/B/C/D, 10K records, 512B values, 4 workers. F4KVS and PostgreSQL tested identically. Real-world performance may differ.*
+      <p class="text-gray-500 text-sm mt-6 text-center max-w-3xl mx-auto">
+        *{PUBLIC_METRICS.methodology}. {benchNote} Real-world performance may differ.*
       </p>
     </div>
   </section>

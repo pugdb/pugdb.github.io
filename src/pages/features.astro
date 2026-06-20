@@ -1,6 +1,12 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
+import { PUBLIC_METRICS, metricsCollectedLabel, benchmarksFresh } from '../config/metrics';
+
+const cov = PUBLIC_METRICS.coverage_lines_percent
+  ? `${Math.round(PUBLIC_METRICS.coverage_lines_percent)}%`
+  : 'tracked per release';
+const benchWhen = benchmarksFresh() ? metricsCollectedLabel() : 'Jan 2026 baseline';
 ---
 
 <BaseLayout title="Features" description="Discover the powerful features of PugDB - performance, modularity, and Rust-native architecture.">
@@ -21,15 +27,15 @@ import Header from '../components/Header.astro';
             <ul class="space-y-4 text-gray-300">
               <li class="flex items-start">
                 <span class="text-green-400 mr-3">✓</span>
-                <span><strong class="text-white">5.8x faster than PostgreSQL</strong> - Verified YCSB benchmarks (4.3x - 7.9x range, single-threaded sequential workload)</span>
+                <span><strong class="text-white">{PUBLIC_METRICS.postgres_speedup_avg}x faster than PostgreSQL</strong> - YCSB benchmarks ({PUBLIC_METRICS.postgres_speedup_min}x–{PUBLIC_METRICS.postgres_speedup_max}x range)</span>
               </li>
               <li class="flex items-start">
                 <span class="text-green-400 mr-3">✓</span>
-                <span><strong class="text-white">3.5x faster than ScyllaDB</strong> - Verified YCSB benchmarks (2.3x - 4.4x range, single-threaded sequential workload)</span>
+                <span><strong class="text-white">{PUBLIC_METRICS.scylla_speedup_avg}x faster than ScyllaDB</strong> - YCSB benchmarks ({PUBLIC_METRICS.scylla_speedup_min}x–{PUBLIC_METRICS.scylla_speedup_max}x range)</span>
               </li>
               <li class="flex items-start">
                 <span class="text-green-400 mr-3">✓</span>
-                <span><strong class="text-white">Sub-millisecond latency</strong> - P50: 0.029-0.072ms, P99: 0.076-0.272ms</span>
+                <span><strong class="text-white">Sub-millisecond latency</strong> - P50: {PUBLIC_METRICS.latency_p50_min}–{PUBLIC_METRICS.latency_p50_max}ms, P99: {PUBLIC_METRICS.latency_p99_min}–{PUBLIC_METRICS.latency_p99_max}ms</span>
               </li>
               <li class="flex items-start">
                 <span class="text-green-400 mr-3">✓</span>
@@ -41,7 +47,7 @@ import Header from '../components/Header.astro';
               </li>
             </ul>
             <p class="text-gray-400 text-sm mt-6 italic">
-              *Benchmark Methodology: Results from single-threaded sequential YCSB workloads (last updated: January 2026). Both PugDB and competitors tested identically. Real-world performance with concurrent workloads may differ.*
+              *Benchmark Methodology: {PUBLIC_METRICS.methodology} (last updated: {benchWhen}). Quality metrics collected {metricsCollectedLabel()}. Real-world performance may differ.*
             </p>
           </div>
         </section>
@@ -117,7 +123,7 @@ import Header from '../components/Header.astro';
             </div>
             <div class="bg-gray-800/60 rounded-xl p-6 border border-gray-700/50">
               <h3 class="text-xl font-semibold text-white mb-2">Query Language</h3>
-              <p class="text-gray-400">Beta (Approaching Production) SQL support with 856+ tests passing. Window functions (100% GA), JOINs (100% GA), subqueries (95% GA), query optimization (100%), and transactions (90%).</p>
+              <p class="text-gray-400">Beta (Approaching Production) SQL support with {PUBLIC_METRICS.ql_tests.toLocaleString('en-US')}+ tests. QL line coverage {cov}. Window functions, JOINs, and query optimization GA; transactions in progress.</p>
             </div>
             <div class="bg-gray-800/60 rounded-xl p-6 border border-gray-700/50">
               <h3 class="text-xl font-semibold text-white mb-2">Privacy-First</h3>

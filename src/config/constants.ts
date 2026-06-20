@@ -1,3 +1,5 @@
+import { PUBLIC_METRICS, postgresSpeedupRange } from './metrics';
+
 export const SITE_CONFIG = {
   name: 'PugDB',
   tagline: 'Blazing-fast modular key-value store that adapts to anything.',
@@ -17,7 +19,7 @@ export const NAV_ITEMS = [
 export const FEATURES = [
   {
     title: 'Lightning Fast',
-    description: '4–8x faster than PostgreSQL in YCSB benchmarks, with sub-millisecond P95 latency.',
+    description: `${postgresSpeedupRange()} faster than PostgreSQL in YCSB benchmarks (avg ${PUBLIC_METRICS.postgres_speedup_avg}x), with sub-millisecond P95 latency.`,
     icon: '⚡',
     color: 'from-yellow-400 to-orange-500',
   },
