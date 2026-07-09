@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
-import { PUBLIC_METRICS, metricsCollectedLabel, benchmarksFresh } from '../config/metrics';
+import { PUBLIC_METRICS, metricsCollectedLabel, benchmarksFresh, opsProofComplete } from '../config/metrics';
 
 const cov = PUBLIC_METRICS.coverage_lines_percent
   ? `${Math.round(PUBLIC_METRICS.coverage_lines_percent)}%`
@@ -19,6 +19,35 @@ const benchWhen = benchmarksFresh() ? metricsCollectedLabel() : 'Jan 2026 baseli
         <p class="text-xl text-gray-400 mb-12">
           PugDB delivers exceptional performance with a modular architecture designed for modern applications.
         </p>
+
+        {opsProofComplete() && PUBLIC_METRICS.ops_proof && (
+          <section class="mb-16">
+            <h2 class="text-3xl font-bold text-white mb-6">🛡️ Production Proof</h2>
+            <div class="bg-gray-800/60 rounded-xl p-8 border border-green-700/40">
+              <ul class="space-y-4 text-gray-300">
+                <li class="flex items-start">
+                  <span class="text-green-400 mr-3">✓</span>
+                  <span><strong class="text-white">Docker staging smoke</strong> — {PUBLIC_METRICS.ops_proof.docker_staging_smoke.tests_passed} tests passed ({PUBLIC_METRICS.ops_proof.docker_staging_smoke.date})</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="text-green-400 mr-3">✓</span>
+                  <span><strong class="text-white">Cluster join/leave</strong> — {PUBLIC_METRICS.ops_proof.docker_staging_join_leave.tests_passed} MultiRaft tests passed</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="text-green-400 mr-3">✓</span>
+                  <span><strong class="text-white">Soak pilot</strong> — {PUBLIC_METRICS.ops_proof.soak_pilot.duration_secs}s sustained load, zero data loss on restart</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="text-green-400 mr-3">✓</span>
+                  <span><strong class="text-white">QL smoke gate</strong> — {PUBLIC_METRICS.ops_proof.ql_gate_smoke.tests_passed} tests (parser, CRUD, server QL wire)</span>
+                </li>
+              </ul>
+              <p class="text-gray-400 text-sm mt-6 italic">
+                Artifacts archived in f4kvs-v2 <code class="text-gray-300">staging-results/</code>. Metrics synced {metricsCollectedLabel()} (commit {PUBLIC_METRICS.git_commit}).
+              </p>
+            </div>
+          </section>
+        )}
 
         <!-- Performance Section -->
         <section class="mb-16">
