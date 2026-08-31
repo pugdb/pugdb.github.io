@@ -1,15 +1,18 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
-import { PUBLIC_METRICS, metricsCollectedLabel, benchmarksFresh, opsProofComplete } from '../config/metrics';
+import { PUBLIC_METRICS, metricsCollectedLabel, benchmarksFresh, opsProofComplete, deBenchReady, alphaEmbedGo, embedPinsLabel } from '../config/metrics';
 
 const cov = PUBLIC_METRICS.coverage_lines_percent
   ? `${Math.round(PUBLIC_METRICS.coverage_lines_percent)}%`
   : 'tracked per release';
 const benchWhen = benchmarksFresh() ? metricsCollectedLabel() : 'Jan 2026 baseline';
+const ops = PUBLIC_METRICS.ops_proof;
+const de = PUBLIC_METRICS.de_bench;
+const rel = PUBLIC_METRICS.releases;
 ---
 
-<BaseLayout title="Features" description="Discover the powerful features of PugDB - performance, modularity, and Rust-native architecture.">
+<BaseLayout title="Features" description="Embed path, soak, crash-loop, and modular LSM engines — the features PugDB actually ships.">
   <Header />
 
   <main class="pt-20 min-h-screen bg-gray-900">
@@ -17,34 +20,71 @@ const benchWhen = benchmarksFresh() ? metricsCollectedLabel() : 'Jan 2026 baseli
       <div class="max-w-4xl mx-auto">
         <h1 class="text-5xl font-bold text-white mb-4">Features</h1>
         <p class="text-xl text-gray-400 mb-12">
-          PugDB delivers exceptional performance with a modular architecture designed for modern applications.
+          PugDB is a Rust LSM you can embed — with soak, crash-loop, and product-shaped benches you can re-run.
         </p>
 
-        {opsProofComplete() && PUBLIC_METRICS.ops_proof && (
+        {alphaEmbedGo() && (
           <section class="mb-16">
-            <h2 class="text-3xl font-bold text-white mb-6">🛡️ Production Proof</h2>
+            <h2 class="text-3xl font-bold text-white mb-6">✅ Embed path</h2>
+            <div class="bg-gray-800/60 rounded-xl p-8 border border-green-700/40">
+              <p class="text-gray-300 mb-4">
+                Tagged train for memoirs &amp; RAG:
+                {rel ? <span> <code class="text-gray-200">{rel.f4kvs_ffi}</code> + <code class="text-gray-200">{rel.f4kvs_lsm}</code></span> : ` ${embedPinsLabel()}`}.
+                {rel?.f4kvs_v2 && <span> Server <code class="text-gray-200">{rel.f4kvs_v2}</code> is the reliability harness — cluster stays lab.</span>}
+                Built for self-hosted and embedded use with a clear release pin.
+              </p>
+              <a href="/blog/embed-train-v025/" class="text-purple-400 hover:text-purple-300 font-medium">Read the update →</a>
+            </div>
+          </section>
+        )}
+
+        {opsProofComplete() && ops && (
+          <section class="mb-16">
+            <h2 class="text-3xl font-bold text-white mb-6">🛡️ Proven under load</h2>
             <div class="bg-gray-800/60 rounded-xl p-8 border border-green-700/40">
               <ul class="space-y-4 text-gray-300">
                 <li class="flex items-start">
                   <span class="text-green-400 mr-3">✓</span>
-                  <span><strong class="text-white">Docker staging smoke</strong> — {PUBLIC_METRICS.ops_proof.docker_staging_smoke.tests_passed} tests passed ({PUBLIC_METRICS.ops_proof.docker_staging_smoke.date})</span>
+                  <span><strong class="text-white">Docker staging</strong> — multi-node smoke and lifecycle</span>
                 </li>
                 <li class="flex items-start">
                   <span class="text-green-400 mr-3">✓</span>
-                  <span><strong class="text-white">Cluster join/leave</strong> — {PUBLIC_METRICS.ops_proof.docker_staging_join_leave.tests_passed} MultiRaft tests passed</span>
+                  <span><strong class="text-white">Cluster scenarios</strong> — replication, delete, health ({ops.cluster_scenarios?.tests_passed ?? 9}/9)</span>
                 </li>
                 <li class="flex items-start">
                   <span class="text-green-400 mr-3">✓</span>
-                  <span><strong class="text-white">Soak pilot</strong> — {PUBLIC_METRICS.ops_proof.soak_pilot.duration_secs}s sustained load, zero data loss on restart</span>
+                  <span><strong class="text-white">Fault injection</strong> — partition, crash, and durability suites green</span>
                 </li>
                 <li class="flex items-start">
                   <span class="text-green-400 mr-3">✓</span>
-                  <span><strong class="text-white">QL smoke gate</strong> — {PUBLIC_METRICS.ops_proof.ql_gate_smoke.tests_passed} tests (parser, CRUD, server QL wire)</span>
+                  <span><strong class="text-white">Crash-loop</strong> — {ops.crash_loop?.rounds ?? 50}× SIGKILL, {ops.crash_loop?.loss ?? 0} loss ({ops.crash_loop?.date ?? '2026-08-17'})</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="text-green-400 mr-3">✓</span>
+                  <span><strong class="text-white">Soak + restart anchors</strong> — {ops.soak_sustained ? `${ops.soak_sustained.cache_ops.toLocaleString('en-US')} cache ops at ${ops.soak_sustained.cache_ops_per_s}/s` : 'sustained load'}, data still there after restart</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="text-green-400 mr-3">✓</span>
+                  <span><strong class="text-white">QL smoke gate</strong> — {ops.ql_gate_smoke.tests_passed} tests</span>
                 </li>
               </ul>
-              <p class="text-gray-400 text-sm mt-6 italic">
-                Artifacts archived in f4kvs-v2 <code class="text-gray-300">staging-results/</code>. Metrics synced {metricsCollectedLabel()} (commit {PUBLIC_METRICS.git_commit}).
+            </div>
+          </section>
+        )}
+
+        {deBenchReady() && de && (
+          <section class="mb-16">
+            <h2 class="text-3xl font-bold text-white mb-6">📊 Scale for chunked data</h2>
+            <div class="bg-gray-800/60 rounded-xl p-8 border border-cyan-700/40">
+              <p class="text-gray-300 mb-4">
+                {de.scale.chunks.toLocaleString('en-US')} × {de.scale.chunk_bytes}B product-shaped keys — bulk durable writes,
+                fast prefix catalogs, integrity after reopen.
               </p>
+              <ul class="space-y-2 text-gray-300 mb-4">
+                <li>~{Math.round((de.results?.f4kvs?.bulk_ingest_ops_per_s ?? 60000) / 1000)}k durable ops/s bulk ingest (native engine)</li>
+                <li>Prefix scan of the full keyset in a few milliseconds</li>
+              </ul>
+              <a href="/bench/" class="text-cyan-400 hover:text-cyan-300 font-medium">See /bench →</a>
             </div>
           </section>
         )}
@@ -56,11 +96,11 @@ const benchWhen = benchmarksFresh() ? metricsCollectedLabel() : 'Jan 2026 baseli
             <ul class="space-y-4 text-gray-300">
               <li class="flex items-start">
                 <span class="text-green-400 mr-3">✓</span>
-                <span><strong class="text-white">{PUBLIC_METRICS.postgres_speedup_avg}x faster than PostgreSQL</strong> - YCSB benchmarks ({PUBLIC_METRICS.postgres_speedup_min}x–{PUBLIC_METRICS.postgres_speedup_max}x range)</span>
+                <span><strong class="text-white">YCSB (10k, partitioned server)</strong> — {PUBLIC_METRICS.postgres_speedup_avg}× vs PostgreSQL ({PUBLIC_METRICS.postgres_speedup_min}×–{PUBLIC_METRICS.postgres_speedup_max}×). Not the embed story; see /bench.</span>
               </li>
               <li class="flex items-start">
                 <span class="text-green-400 mr-3">✓</span>
-                <span><strong class="text-white">{PUBLIC_METRICS.scylla_speedup_avg}x faster than ScyllaDB</strong> - YCSB benchmarks ({PUBLIC_METRICS.scylla_speedup_min}x–{PUBLIC_METRICS.scylla_speedup_max}x range)</span>
+                <span><strong class="text-white">YCSB vs ScyllaDB</strong> — {PUBLIC_METRICS.scylla_speedup_avg}× ({PUBLIC_METRICS.scylla_speedup_min}×–{PUBLIC_METRICS.scylla_speedup_max}×) on the same 10k campaign</span>
               </li>
               <li class="flex items-start">
                 <span class="text-green-400 mr-3">✓</span>
@@ -92,7 +132,7 @@ const benchWhen = benchmarksFresh() ? metricsCollectedLabel() : 'Jan 2026 baseli
               </div>
               <div>
                 <h3 class="text-xl font-semibold text-white mb-2">LSM-Tree Storage - Beta - Well Tested</h3>
-                <p class="text-gray-400">Write-optimized persistent storage engine with automatic compaction, crash recovery, and WAL. 51 unit tests + integration tests.</p>
+                <p class="text-gray-400">Canonical persistent engine ({PUBLIC_METRICS.releases?.f4kvs_lsm ?? 'v0.3.x'}) — compaction, crash recovery, WAL, prefix scan. Shared by the server and the C/Go embed path.</p>
               </div>
               <div>
                 <h3 class="text-xl font-semibold text-white mb-2">Partitioned Storage - Beta - Well Tested</h3>
@@ -160,7 +200,7 @@ const benchWhen = benchmarksFresh() ? metricsCollectedLabel() : 'Jan 2026 baseli
             </div>
             <div class="bg-gray-800/60 rounded-xl p-6 border border-gray-700/50">
               <h3 class="text-xl font-semibold text-white mb-2">Multi-Language Support (FFI)</h3>
-              <p class="text-gray-400">C-compatible FFI bindings enable integration from Python, Go, C++, Node.js, and virtually any programming language. Use PugDB's high performance regardless of your tech stack.</p>
+              <p class="text-gray-400">Production embed is C ABI + Go wrappers ({PUBLIC_METRICS.releases?.f4kvs_ffi ?? 'ffi'}). Cursor pages and prefix scan on the current pin. Other languages can bind the same C header.</p>
             </div>
           </div>
         </section>

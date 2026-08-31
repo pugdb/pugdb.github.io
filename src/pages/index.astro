@@ -5,27 +5,51 @@ import Hero from '../components/Hero.astro';
 import TerminalDemo from '../components/TerminalDemo.astro';
 import FeatureCard from '../components/FeatureCard.astro';
 import { FEATURES } from '../config/constants';
-import { PUBLIC_METRICS, metricsCollectedLabel, postgresSpeedupRange, benchmarksFresh, opsProofComplete } from '../config/metrics';
+import {
+  PUBLIC_METRICS,
+  metricsCollectedLabel,
+  postgresSpeedupRange,
+  benchmarksFresh,
+  opsProofComplete,
+  deBenchReady,
+  alphaEmbedGo,
+  crashLoopReady,
+  soakSustainedReady,
+  embedPinsLabel,
+} from '../config/metrics';
 
 const testsLabel = PUBLIC_METRICS.tests_total.toLocaleString('en-US');
 const benchNote = benchmarksFresh()
-  ? `Benchmarks refreshed ${metricsCollectedLabel()} (commit ${PUBLIC_METRICS.git_commit}).`
-  : `Benchmarks carried forward from Jan 2026 baseline; quality metrics from ${metricsCollectedLabel()} (commit ${PUBLIC_METRICS.git_commit}).`;
+  ? `Quality snapshot ${metricsCollectedLabel()} (server ${PUBLIC_METRICS.git_commit}).`
+  : `Quality metrics from ${metricsCollectedLabel()} (commit ${PUBLIC_METRICS.git_commit}).`;
 const ops = PUBLIC_METRICS.ops_proof;
-const soakMinutes = ops?.soak_pilot?.duration_secs ? Math.round(ops.soak_pilot.duration_secs / 60) : null;
+const de = PUBLIC_METRICS.de_bench;
+const rel = PUBLIC_METRICS.releases;
+const crash = ops?.crash_loop;
+const soak = ops?.soak_sustained;
 ---
 
-<BaseLayout title="Home" description="Blazing-fast modular key-value store that adapts to anything.">
+<BaseLayout title="PugDB — embeddable Rust LSM" description="Modular LSM you can embed. Built so the data is still there after restart. PugDB is the public name of F4KVS.">
   <Header />
   <Hero />
 
-  <!-- Beta Status Notice -->
-  <section class="py-4 bg-yellow-900/20 border-b border-yellow-700/50">
+  <!-- Status Notice -->
+  <section class={`py-4 border-b ${alphaEmbedGo() ? 'bg-green-900/20 border-green-700/50' : 'bg-yellow-900/20 border-yellow-700/50'}`}>
     <div class="container mx-auto px-6">
       <div class="max-w-4xl mx-auto text-center">
-        <p class="text-yellow-300 text-sm">
-          <strong>Beta Status:</strong> PugDB is currently in beta. Core features are stable and well-tested, but the project is still under active development.
-        </p>
+        {alphaEmbedGo() ? (
+          <p class="text-green-300 text-sm">
+            <strong>Alpha embed ready</strong> for memoirs &amp; RAG —
+            {rel ? <span> <code class="text-green-200">{rel.f4kvs_ffi}</code> + <code class="text-green-200">{rel.f4kvs_lsm}</code></span> : ' tagged FFI + LSM'}.
+            Server {rel?.f4kvs_v2 ?? ''} is lab; the cluster is not a generic prod GO.
+            {' '}<a href="/blog/embed-train-v025/" class="underline hover:text-white">What’s new</a>
+            · <a href="/bench/" class="underline hover:text-white">Bench</a>
+          </p>
+        ) : (
+          <p class="text-yellow-300 text-sm">
+            <strong>Beta Status:</strong> PugDB is currently in beta. Core features are stable and well-tested, but the project is still under active development.
+          </p>
+        )}
       </div>
     </div>
   </section>
@@ -38,10 +62,10 @@ const soakMinutes = ops?.soak_pilot?.duration_secs ? Math.round(ops.soak_pilot.d
     <div class="container mx-auto px-6">
       <div class="text-center mb-16">
         <h2 class="text-4xl lg:text-5xl font-bold text-white mb-4">
-          Built for Performance
+          Built to keep the corpus
         </h2>
         <p class="text-xl text-gray-400 max-w-2xl mx-auto">
-          PugDB delivers exceptional performance with a modular architecture that adapts to your needs.
+          PugDB is the public name of F4KVS — a Rust LSM you embed, with gates you can re-run. Not a chart war against RocksDB.
         </p>
       </div>
 
@@ -63,36 +87,36 @@ const soakMinutes = ops?.soak_pilot?.duration_secs ? Math.round(ops.soak_pilot.d
     <div class="container mx-auto px-6">
       <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center max-w-5xl mx-auto">
         <div>
-          <div class="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500 mb-2">
-            {postgresSpeedupRange()}
+          <div class="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-500 mb-2">
+            {crashLoopReady() && crash ? `${crash.rounds}/${crash.rounds}` : '50/50'}
           </div>
-          <div class="text-gray-400 text-lg">Faster than PostgreSQL</div>
-          <p class="text-gray-500 text-xs mt-2">YCSB avg {PUBLIC_METRICS.postgres_speedup_avg}x</p>
+          <div class="text-gray-400 text-lg">Crash-loop, 0 loss</div>
+          <p class="text-gray-500 text-xs mt-2">SIGKILL × {crash?.ops_per_round?.toLocaleString('en-US') ?? '1,000'} ops</p>
         </div>
         <div>
           <div class="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500 mb-2">
-            {PUBLIC_METRICS.scylla_speedup_avg}x
+            {soakSustainedReady() && soak ? `${(soak.cache_ops / 1_000_000).toFixed(2)}M` : '1.66M'}
           </div>
-          <div class="text-gray-400 text-lg">Faster than ScyllaDB</div>
-          <p class="text-gray-500 text-xs mt-2">{PUBLIC_METRICS.scylla_speedup_min}–{PUBLIC_METRICS.scylla_speedup_max}x range</p>
+          <div class="text-gray-400 text-lg">Soak cache ops</div>
+          <p class="text-gray-500 text-xs mt-2">{soak?.cache_ops_per_s ?? 462}/s · 10/10 anchors</p>
+        </div>
+        <div>
+          <div class="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500 mb-2">
+            100k
+          </div>
+          <div class="text-gray-400 text-lg">RAG chunks held</div>
+          <p class="text-gray-500 text-xs mt-2">{de?.row_count?.toLocaleString('en-US') ?? '100,050'} after restart</p>
         </div>
         <div>
           <div class="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-pink-500 mb-2">
             {testsLabel}
           </div>
-          <div class="text-gray-400 text-lg">Automated Tests</div>
-          <p class="text-gray-500 text-xs mt-2">Server monorepo crates</p>
-        </div>
-        <div>
-          <div class="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-500 mb-2">
-            {PUBLIC_METRICS.clustering_tests.toLocaleString('en-US')}
-          </div>
-          <div class="text-gray-400 text-lg">Clustering Tests</div>
-          <p class="text-gray-500 text-xs mt-2">Raft, HMLC, failover</p>
+          <div class="text-gray-400 text-lg">Automated tests</div>
+          <p class="text-gray-500 text-xs mt-2">Server monorepo · {embedPinsLabel()}</p>
         </div>
       </div>
       <p class="text-gray-500 text-sm mt-6 text-center max-w-3xl mx-auto">
-        *{PUBLIC_METRICS.methodology}. {benchNote} Real-world performance may differ.*
+        *{benchNote} Server YCSB (partitioned path) still {postgresSpeedupRange()} vs PostgreSQL, {PUBLIC_METRICS.scylla_speedup_avg}× vs ScyllaDB — see <a href="/bench/" class="underline hover:text-gray-300">/bench</a>. Real-world performance may differ.*
       </p>
     </div>
   </section>
@@ -101,25 +125,31 @@ const soakMinutes = ops?.soak_pilot?.duration_secs ? Math.round(ops.soak_pilot.d
     <section class="py-16 bg-gray-900 border-t border-gray-800">
       <div class="container mx-auto px-6">
         <div class="max-w-5xl mx-auto">
-          <h2 class="text-3xl font-bold text-white mb-3 text-center">Production Proof</h2>
+          <h2 class="text-3xl font-bold text-white mb-3 text-center">Production proof</h2>
           <p class="text-gray-400 text-center mb-10 max-w-2xl mx-auto">
-            Reproducible staging, soak, and QL gates — not just benchmark charts. Recorded {ops.docker_staging_smoke.date} on commit {PUBLIC_METRICS.git_commit}.
+            Reproducible staging, soak, crash-loop, and QL gates — not just benchmark charts. Snapshot {metricsCollectedLabel()}.
           </p>
           <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             <div class="bg-gray-800/60 rounded-xl p-6 border border-green-700/40 text-center">
-              <div class="text-3xl font-bold text-green-400 mb-2">{ops.docker_staging_smoke.tests_passed}/2</div>
-              <div class="text-white font-medium">Docker staging smoke</div>
-              <p class="text-gray-500 text-sm mt-2">Failover + cluster lifecycle</p>
+              <div class="text-3xl font-bold text-green-400 mb-2">
+                {crash?.rounds ?? 50}/{crash?.rounds ?? 50}
+              </div>
+              <div class="text-white font-medium">Crash-loop</div>
+              <p class="text-gray-500 text-sm mt-2">SIGKILL, zero loss · 17 Aug</p>
             </div>
             <div class="bg-gray-800/60 rounded-xl p-6 border border-green-700/40 text-center">
-              <div class="text-3xl font-bold text-green-400 mb-2">{ops.docker_staging_join_leave.tests_passed}/3</div>
-              <div class="text-white font-medium">Join / leave</div>
-              <p class="text-gray-500 text-sm mt-2">MultiRaft scale up/down</p>
+              <div class="text-3xl font-bold text-green-400 mb-2">
+                {soak?.cache_ops_per_s ?? 462}/s
+              </div>
+              <div class="text-white font-medium">Soak 1h+1h</div>
+              <p class="text-gray-500 text-sm mt-2">{(soak?.cache_ops ?? 1661444).toLocaleString('en-US')} cache ops · 10/10 anchors</p>
             </div>
             <div class="bg-gray-800/60 rounded-xl p-6 border border-green-700/40 text-center">
-              <div class="text-3xl font-bold text-green-400 mb-2">{soakMinutes}m</div>
-              <div class="text-white font-medium">Soak pilot</div>
-              <p class="text-gray-500 text-sm mt-2">0 health failures · 10/10 anchors</p>
+              <div class="text-3xl font-bold text-green-400 mb-2">
+                {ops.cluster_hostile_persistent?.tests_passed ?? 5}/{ops.cluster_hostile_persistent?.tests_total ?? 5}
+              </div>
+              <div class="text-white font-medium">Hostile LSM</div>
+              <p class="text-gray-500 text-sm mt-2">Partition · crash · quorum · durability (lab)</p>
             </div>
             <div class="bg-gray-800/60 rounded-xl p-6 border border-green-700/40 text-center">
               <div class="text-3xl font-bold text-green-400 mb-2">{ops.ql_gate_smoke.tests_passed}</div>
@@ -127,6 +157,45 @@ const soakMinutes = ops?.soak_pilot?.duration_secs ? Math.round(ops.soak_pilot.d
               <p class="text-gray-500 text-sm mt-2">Parser, CRUD, server wire path</p>
             </div>
           </div>
+          <p class="text-center text-gray-500 text-sm mt-8">
+            Cluster scenarios {ops.cluster_scenarios?.tests_passed ?? 9}/9 · docker staging {ops.docker_staging_smoke.tests_passed}/2.
+            The cluster path stays <strong class="text-gray-400">lab</strong> — GO is the embed train only.
+          </p>
+        </div>
+      </div>
+    </section>
+  )}
+
+  {deBenchReady() && de && (
+    <section class="py-16 bg-gray-800/40 border-t border-gray-800">
+      <div class="container mx-auto px-6">
+        <div class="max-w-5xl mx-auto text-center">
+          <h2 class="text-3xl font-bold text-white mb-3">Built for chunked corpora</h2>
+          <p class="text-gray-400 mb-8 max-w-2xl mx-auto">
+            {de.scale.chunks.toLocaleString('en-US')} × {de.scale.chunk_bytes}B product-shaped keys ·
+            bulk durable ingest · fast prefix catalogs · verified after restart
+          </p>
+          <div class="grid sm:grid-cols-3 gap-6 mb-8">
+            <div class="bg-gray-900/60 rounded-xl p-6 border border-gray-700/50">
+              <div class="text-2xl font-bold text-cyan-400 mb-1">
+                ~{Math.round((de.results?.f4kvs?.bulk_ingest_ops_per_s ?? 60000) / 1000)}k/s
+              </div>
+              <div class="text-white text-sm">Bulk durable ingest</div>
+            </div>
+            <div class="bg-gray-900/60 rounded-xl p-6 border border-gray-700/50">
+              <div class="text-2xl font-bold text-purple-400 mb-1">
+                {de.results?.f4kvs?.prefix_scan_ms ?? '2'} ms
+              </div>
+              <div class="text-white text-sm">Prefix scan (full keyset)</div>
+            </div>
+            <div class="bg-gray-900/60 rounded-xl p-6 border border-gray-700/50">
+              <div class="text-2xl font-bold text-green-400 mb-1">{(de.row_count ?? 100050).toLocaleString('en-US')}</div>
+              <div class="text-white text-sm">Keys after restart</div>
+            </div>
+          </div>
+          <a href="/bench/" class="inline-flex px-6 py-3 bg-purple-600 hover:bg-purple-500 text-white font-semibold rounded-lg">
+            Explore /bench
+          </a>
         </div>
       </div>
     </section>
@@ -136,10 +205,10 @@ const soakMinutes = ops?.soak_pilot?.duration_secs ? Math.round(ops.soak_pilot.d
   <section class="py-20 bg-gradient-to-br from-purple-900/20 to-pink-900/20">
     <div class="container mx-auto px-6 text-center">
       <h2 class="text-4xl lg:text-5xl font-bold text-white mb-6">
-        Ready to Get Started?
+        Ready to look closer?
       </h2>
       <p class="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
-        Explore the documentation or check out the source code on GitHub.
+        Interactive demo, documentation, or the evidence on /bench. PugDB is built by <a href="https://noematic.eu" class="underline hover:text-white">Noematic</a>.
       </p>
       <div class="flex flex-col sm:flex-row gap-4 justify-center">
         <a

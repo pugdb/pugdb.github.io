@@ -9,7 +9,7 @@ const cov = PUBLIC_METRICS.coverage_lines_percent
   : 'see release reports';
 ---
 
-<BaseLayout title="What is PugDB?" description="Introduction to PugDB - a privacy-first, Rust-native key-value store for high-performance applications">
+<BaseLayout title="What is PugDB?" description="PugDB is the public name of F4KVS: a Rust-native LSM you can embed. Memoirs and RAG chunks still there after restart.">
   <Header />
 
   <main class="pt-20 min-h-screen bg-gray-900">
@@ -18,18 +18,18 @@ const cov = PUBLIC_METRICS.coverage_lines_percent
         <h1 class="text-5xl font-bold text-white mb-4">What is PugDB?</h1>
 
         <p class="text-xl text-gray-300 mb-8">
-          <strong>PugDB</strong> is a <strong>privacy-first, Rust-native key-value store</strong> designed for high-performance applications. Built with modern Rust and optimized for speed, reliability, and data sovereignty.
+          <strong>PugDB</strong> is the public name of <strong>F4KVS</strong>: a <strong>Rust-native LSM</strong> you can embed or self-host. Built so a real corpus — memoirs, RAG chunks — is still there after restart, not only faster on a chart.
         </p>
 
-        <div class="bg-yellow-900/20 rounded-xl p-4 border border-yellow-700/50 mb-8">
-          <p class="text-yellow-300 text-sm"><strong>Beta Status</strong>: PugDB is currently in beta. Core features are stable and well-tested, but the project is still under active development. Some advanced features may change before the production release.</p>
+        <div class="bg-green-900/20 rounded-xl p-4 border border-green-700/50 mb-8">
+          <p class="text-green-300 text-sm"><strong>Alpha embed</strong> (GO 2026-07-23): C/Go FFI + LSM for memoirs/RAG preprod. Pins {PUBLIC_METRICS.releases?.f4kvs_ffi} + {PUBLIC_METRICS.releases?.f4kvs_lsm}. The server cluster remains <strong>lab</strong> — not a generic production GO. Core KV is well-tested; some distributed features will still change.</p>
         </div>
 
         <section class="mb-12">
           <h2 class="text-3xl font-bold text-white mb-4">Core Definition</h2>
           <p class="text-gray-300 mb-4">PugDB is a high-performance key-value storage system that provides:</p>
           <ul class="text-gray-300 space-y-2 list-disc list-inside">
-            <li><strong class="text-white">Verified Performance</strong>: {PUBLIC_METRICS.postgres_speedup_avg}x faster than PostgreSQL, {PUBLIC_METRICS.scylla_speedup_avg}x faster than ScyllaDB (YCSB benchmarks, {benchWhen})</li>
+            <li><strong class="text-white">Restart proof</strong>: 50× SIGKILL crash-loop with 0 loss; 1.66M soak cache ops with 10/10 anchors; 100k RAG chunks held after reopen</li>
             <li><strong class="text-white">Low Latency</strong>: P50 latency {PUBLIC_METRICS.latency_p50_min}–{PUBLIC_METRICS.latency_p50_max}ms, P99 latency {PUBLIC_METRICS.latency_p99_min}–{PUBLIC_METRICS.latency_p99_max}ms</li>
             <li><strong class="text-white">Stable Core (Beta)</strong>: {PUBLIC_METRICS.tests_total.toLocaleString('en-US')} automated tests, {PUBLIC_METRICS.ql_tests.toLocaleString('en-US')} QL tests, {cov} QL line coverage (as of {metricsCollectedLabel()})</li>
             <li><strong class="text-white">Privacy-First Design</strong>: Built with encryption support, audit logging, and offline-first capabilities</li>
@@ -42,7 +42,7 @@ const cov = PUBLIC_METRICS.coverage_lines_percent
 
           <div class="mb-6">
             <h3 class="text-2xl font-semibold text-white mb-3">High Performance</h3>
-            <p class="text-gray-300">PugDB delivers exceptional performance with verified YCSB benchmarks (last updated: {benchWhen}) showing {PUBLIC_METRICS.postgres_speedup_avg}x faster throughput than PostgreSQL and {PUBLIC_METRICS.scylla_speedup_avg}x faster than ScyllaDB. The system is optimized for low latency, with P50 latency of {PUBLIC_METRICS.latency_p50_min}–{PUBLIC_METRICS.latency_p50_max}ms and P99 latency of {PUBLIC_METRICS.latency_p99_min}–{PUBLIC_METRICS.latency_p99_max}ms across measured workloads.</p>
+            <p class="text-gray-300">The number we care about first is <strong class="text-white">still there after restart</strong>. Product-shaped meso ingest holds 100,050 / 100,050 keys. Server YCSB (10k, partitioned) is {PUBLIC_METRICS.postgres_speedup_avg}× vs PostgreSQL and {PUBLIC_METRICS.scylla_speedup_avg}× vs ScyllaDB ({benchWhen}) — published on /bench, not as a RocksDB pitch. P50 {PUBLIC_METRICS.latency_p50_min}–{PUBLIC_METRICS.latency_p50_max}ms, P99 {PUBLIC_METRICS.latency_p99_min}–{PUBLIC_METRICS.latency_p99_max}ms on that campaign.</p>
           </div>
 
           <div class="mb-6">
@@ -64,7 +64,7 @@ const cov = PUBLIC_METRICS.coverage_lines_percent
               <li><strong class="text-white">Zero Overhead</strong>: FFI bindings provide direct access to PugDB's core functionality</li>
               <li><strong class="text-white">Cross-Platform</strong>: Works on all platforms where Rust compiles</li>
             </ul>
-            <p class="text-gray-400 text-sm mt-2">The FFI crate (f4kvs-ffi) provides a stable C API that enables integration with virtually any programming language, making PugDB accessible beyond the Rust ecosystem.</p>
+            <p class="text-gray-400 text-sm mt-2">The FFI crate ({PUBLIC_METRICS.releases?.f4kvs_ffi}) is the production embed path — C ABI + Go wrappers over {PUBLIC_METRICS.releases?.f4kvs_lsm}. Other languages can bind the same header.</p>
           </div>
 
           <div class="mb-6">
@@ -133,9 +133,9 @@ const cov = PUBLIC_METRICS.coverage_lines_percent
 
         <section class="mb-12">
           <h2 class="text-3xl font-bold text-white mb-4">Performance Highlights</h2>
-          <p class="text-gray-300 mb-4">PugDB's performance has been verified through extensive YCSB benchmarking with proper isolation and statistical validation (last updated: {benchWhen}):</p>
+          <p class="text-gray-300 mb-4">See <a href="/bench/">/bench</a> for product-shaped numbers. The small YCSB A/B/D 10k campaign (last updated: {benchWhen}):</p>
           <ul class="text-gray-300 space-y-2 list-disc list-inside">
-            <li><strong class="text-white">Throughput</strong>: {PUBLIC_METRICS.postgres_speedup_avg}x faster than PostgreSQL ({PUBLIC_METRICS.postgres_speedup_min}x–{PUBLIC_METRICS.postgres_speedup_max}x range), {PUBLIC_METRICS.scylla_speedup_avg}x faster than ScyllaDB ({PUBLIC_METRICS.scylla_speedup_min}x–{PUBLIC_METRICS.scylla_speedup_max}x range)</li>
+            <li><strong class="text-white">Throughput</strong>: {PUBLIC_METRICS.postgres_speedup_avg}× vs PostgreSQL ({PUBLIC_METRICS.postgres_speedup_min}×–{PUBLIC_METRICS.postgres_speedup_max}×), {PUBLIC_METRICS.scylla_speedup_avg}× vs ScyllaDB ({PUBLIC_METRICS.scylla_speedup_min}×–{PUBLIC_METRICS.scylla_speedup_max}×)</li>
             <li><strong class="text-white">Latency</strong>: P50 latency {PUBLIC_METRICS.latency_p50_min}–{PUBLIC_METRICS.latency_p50_max}ms, P99 latency {PUBLIC_METRICS.latency_p99_min}–{PUBLIC_METRICS.latency_p99_max}ms</li>
             <li><strong class="text-white">Batch Operations</strong>: Optimized with connection reuse</li>
             <li><strong class="text-white">Concurrency</strong>: Excellent scaling up to 32 threads</li>

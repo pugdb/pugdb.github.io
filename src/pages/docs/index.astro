@@ -3,7 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Header from '../../components/Header.astro';
 ---
 
-<BaseLayout title="Documentation" description="Learn about PugDB - a privacy-first, Rust-native key-value store.">
+<BaseLayout title="Documentation" description="Docs for PugDB — embeddable Rust LSM (F4KVS). Architecture, embed path, and how to get started.">
   <Header />
 
   <main class="pt-20 min-h-screen bg-gray-900">
@@ -20,7 +20,7 @@ import Header from '../../components/Header.astro';
               What is PugDB?
             </h2>
             <p class="text-gray-400">
-              Introduction to PugDB - a privacy-first, Rust-native key-value store for high-performance applications.
+              PugDB is the public name of F4KVS: a Rust-native LSM you can embed. Built so a corpus is still there after restart.
             </p>
           </a>
 
@@ -29,7 +29,7 @@ import Header from '../../components/Header.astro';
               Why PugDB?
             </h2>
             <p class="text-gray-400">
-              Discover why PugDB is needed - performance advantages, key differentiators, and problems it solves.
+              Why an embeddable LSM with re-runnable gates — not a chart war against RocksDB.
             </p>
           </a>
 
@@ -38,7 +38,7 @@ import Header from '../../components/Header.astro';
               How PugDB Works
             </h2>
             <p class="text-gray-400">
-              Technical architecture and implementation details of PugDB's layered architecture.
+              Layered architecture: FFI embed path, LSM engines, and what is still lab.
             </p>
           </a>
         </div>

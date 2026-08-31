@@ -12,27 +12,25 @@
 
 ## TL;DR
 
-**PugDB** (formerly F4KVS) is a **privacy-first, Rust-native key-value store** designed for high-performance applications. 
+**PugDB** (the public name of **F4KVS**) is a **Rust-native LSM** you can embed — built so a real corpus survives restarts.
 
-- ⚡ **5.8x faster than PostgreSQL, 3.5x faster than ScyllaDB** (verified YCSB benchmarks)
-- 🦀 **Built in Rust** with async/await, memory safety, and modern patterns
-- 🧩 **Modular architecture** with pluggable storage engines (Memory, LSM-Tree, Partitioned)
-- ✅ **Production-ready core** with 5,456 tests passing and 62%+ code coverage
-- 🔒 **Privacy-first design** with encryption support, audit logging, and offline-first capabilities
-- 📊 **SQL query language** (beta) with window functions, JOINs, and transactions
-- 📈 **Sub-millisecond latency**: P50 0.029-0.072ms, P99 0.076-0.272ms
-
-Perfect for applications that need **blazing-fast performance**, **data sovereignty**, and **modular extensibility**.
+- 🛡 **Crash-loop 50× SIGKILL, 0 loss** · soak 1.66M cache ops, 10/10 restart anchors (Aug 2026)
+- 📦 **100k RAG-shaped chunks** held after reopen (meso, 100,050 / 100,050)
+- 🔌 **Embed path**: f4kvs-ffi **v0.2.5** + f4kvs-lsm **v0.3.6** (C / Go). Cluster stays lab.
+- 🦀 **Built in Rust** with async/await and a modular engine (Memory, LSM-Tree, Partitioned)
+- ✅ **5,597** automated tests on the server monorepo (nextest)
+- 📊 **SQL query language** (beta) with window functions and JOINs
+- We do **not** pitch “faster than RocksDB”. YCSB tables live on [/bench](https://pugdb.github.io/bench).
 
 ## About
 
-PugDB is a blazing-fast, modular key-value store built with Rust. It delivers exceptional performance with a modular architecture that adapts to your needs.
+PugDB is a modular key-value store built with Rust. The public artefact is the **embed train** (LSM + FFI). The server is the soak/crash-loop harness.
 
 ### Key Features
 
-- ⚡ **Lightning Fast** - 5.8x faster than PostgreSQL, 3.5x faster than ScyllaDB
-- 🔌 **Infinitely Extensible** - Modular architecture with pluggable storage engines
-- 🧩 **Modular Design** - Choose the right components for your needs
+- 🛡 **Survives restarts** — crash-loop and soak with post-restart anchors
+- 🔌 **Embed in C/Go** — tagged FFI over the canonical LSM
+- 🧩 **Modular engines** — memory, LSM-tree, partitioned
 
 ## 🚀 Project Structure
 

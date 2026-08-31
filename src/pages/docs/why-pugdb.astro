@@ -6,7 +6,7 @@ import { PUBLIC_METRICS, metricsCollectedLabel, benchmarksFresh } from '../../co
 const benchWhen = benchmarksFresh() ? metricsCollectedLabel() : 'January 2026';
 ---
 
-<BaseLayout title="Why PugDB?" description="Discover why PugDB is needed - performance advantages, key differentiators, and problems it solves">
+<BaseLayout title="Why PugDB?" description="PugDB exists so a real corpus survives restarts — an embeddable Rust LSM with gates you can re-run, not a RocksDB chart war.">
   <Header />
 
   <main class="pt-20 min-h-screen bg-gray-900">
@@ -15,60 +15,47 @@ const benchWhen = benchmarksFresh() ? metricsCollectedLabel() : 'January 2026';
         <h1 class="text-5xl font-bold text-white mb-4">Why PugDB?</h1>
 
         <p class="text-xl text-gray-300 mb-8">
-          Modern applications demand high-performance, reliable, and secure data storage. Existing key-value store solutions often fall short in critical areas: performance bottlenecks, memory safety concerns, privacy limitations, and outdated architectures. PugDB addresses these challenges head-on.
+          Beating a KV on a public chart does not say whether a memoirs or RAG corpus survives restarts, failover, and months of ingest. PugDB exists for that second question — an embeddable Rust LSM with gates you can re-run.
         </p>
 
         <section class="mb-12">
-          <h2 class="text-3xl font-bold text-white mb-4">Performance Advantages</h2>
-          <p class="text-gray-300 mb-4">PugDB delivers superior performance compared to established key-value store solutions:</p>
+          <h2 class="text-3xl font-bold text-white mb-4">What we actually prove</h2>
+          <p class="text-gray-300 mb-4">Evidence from the embed train and the server harness (snapshot {metricsCollectedLabel()}):</p>
 
           <div class="bg-gray-800/60 rounded-xl p-6 border border-gray-700/50 mb-6">
             <table class="w-full text-left">
               <thead>
                 <tr class="border-b border-gray-700">
-                  <th class="pb-3 text-white font-semibold">Solution</th>
-                  <th class="pb-3 text-white font-semibold">Throughput (ops/sec)</th>
-                  <th class="pb-3 text-white font-semibold">P50 Latency</th>
-                  <th class="pb-3 text-white font-semibold">P99 Latency</th>
-                  <th class="pb-3 text-white font-semibold">Improvement</th>
+                  <th class="pb-3 text-white font-semibold">Gate</th>
+                  <th class="pb-3 text-white font-semibold">Result</th>
+                  <th class="pb-3 text-white font-semibold">When</th>
                 </tr>
               </thead>
               <tbody class="text-gray-300">
                 <tr class="border-b border-gray-800">
-                  <td class="py-3"><strong class="text-white">PugDB</strong></td>
-                  <td class="py-3"><strong class="text-green-400">16,777-30,389</strong></td>
-                  <td class="py-3"><strong class="text-green-400">{PUBLIC_METRICS.latency_p50_min}–{PUBLIC_METRICS.latency_p50_max}ms</strong></td>
-                  <td class="py-3"><strong class="text-green-400">{PUBLIC_METRICS.latency_p99_min}–{PUBLIC_METRICS.latency_p99_max}ms</strong></td>
-                  <td class="py-3"><strong class="text-green-400">Baseline</strong></td>
+                  <td class="py-3"><strong class="text-white">Crash-loop</strong></td>
+                  <td class="py-3"><strong class="text-green-400">50× SIGKILL, 0 loss</strong></td>
+                  <td class="py-3">2026-08-17</td>
                 </tr>
                 <tr class="border-b border-gray-800">
-                  <td class="py-3">PostgreSQL</td>
-                  <td class="py-3">3,491-4,695</td>
-                  <td class="py-3">0.195-0.270ms</td>
-                  <td class="py-3">0.391-0.487ms</td>
-                  <td class="py-3"><strong class="text-red-400">{PUBLIC_METRICS.postgres_speedup_min}x–{PUBLIC_METRICS.postgres_speedup_max}x slower</strong></td>
+                  <td class="py-3"><strong class="text-white">Soak 1h+1h</strong></td>
+                  <td class="py-3"><strong class="text-green-400">1.66M cache ops, 10/10 anchors</strong></td>
+                  <td class="py-3">2026-08-18</td>
+                </tr>
+                <tr class="border-b border-gray-800">
+                  <td class="py-3"><strong class="text-white">Meso 100k chunks</strong></td>
+                  <td class="py-3"><strong class="text-green-400">100,050 / 100,050 after restart</strong></td>
+                  <td class="py-3">2026-07-24</td>
                 </tr>
                 <tr>
-                  <td class="py-3">ScyllaDB</td>
-                  <td class="py-3">6,741-7,681</td>
-                  <td class="py-3">0.138-0.144ms</td>
-                  <td class="py-3">0.176-0.211ms</td>
-                  <td class="py-3"><strong class="text-red-400">{PUBLIC_METRICS.scylla_speedup_min}x–{PUBLIC_METRICS.scylla_speedup_max}x slower</strong></td>
+                  <td class="py-3"><strong class="text-white">YCSB 10k (server)</strong></td>
+                  <td class="py-3">{PUBLIC_METRICS.postgres_speedup_avg}× vs PostgreSQL · {PUBLIC_METRICS.scylla_speedup_avg}× vs ScyllaDB</td>
+                  <td class="py-3">{benchWhen}</td>
                 </tr>
               </tbody>
             </table>
-            <p class="text-gray-400 text-sm mt-4">* {PUBLIC_METRICS.methodology}. Last updated: {benchWhen}. Quality metrics: {metricsCollectedLabel()} (commit {PUBLIC_METRICS.git_commit}). Real-world performance may differ.</p>
+            <p class="text-gray-400 text-sm mt-4">* Full methodology on <a href="/bench/" class="text-purple-400 hover:text-purple-300">/bench</a>. We do not pitch “faster than RocksDB”. Cluster remains lab.</p>
           </div>
-
-          <p class="text-gray-300 mb-4">PugDB's verified performance advantages include:</p>
-          <ul class="text-gray-300 space-y-2 list-disc list-inside">
-            <li><strong class="text-white">Consistent Low Latency</strong>: P50 latency {PUBLIC_METRICS.latency_p50_min}–{PUBLIC_METRICS.latency_p50_max}ms, P99 latency {PUBLIC_METRICS.latency_p99_min}–{PUBLIC_METRICS.latency_p99_max}ms</li>
-            <li><strong class="text-white">Superior Throughput</strong>: {PUBLIC_METRICS.postgres_speedup_avg}x faster than PostgreSQL, {PUBLIC_METRICS.scylla_speedup_avg}x faster than ScyllaDB on average</li>
-            <li><strong class="text-white">Excellent Concurrency</strong>: Scales well up to 32 threads</li>
-            <li><strong class="text-white">Memory Efficiency</strong>: Optimized memory pools and resource management</li>
-            <li><strong class="text-white">Batch Operations</strong>: Highly optimized bulk operations with connection reuse</li>
-            <li><strong class="text-white">Cost Efficiency</strong>: Higher performance means you can handle more operations with fewer resources, reducing infrastructure costs and operational expenses</li>
-          </ul>
         </section>
 
         <section class="mb-12">
@@ -104,9 +91,15 @@ const benchWhen = benchmarksFresh() ? metricsCollectedLabel() : 'January 2026';
 
           <div class="space-y-6">
             <div class="bg-gray-800/60 rounded-xl p-6 border border-gray-700/50">
-              <h3 class="text-xl font-semibold text-white mb-2">Single-Server High-Performance Caching</h3>
-              <p class="text-gray-300 mb-2">Ideal for session storage, application-level caching, real-time data processing, and high-frequency read/write workloads.</p>
-              <p class="text-gray-400 text-sm">Why PugDB: 5.8x faster than PostgreSQL, 3.5x faster than ScyllaDB (single-threaded sequential workload), sub-millisecond latency (P50: 0.029-0.072ms), stable memory storage (beta), excellent concurrency support, and lower resource consumption leading to reduced infrastructure costs.</p>
+              <h3 class="text-xl font-semibold text-white mb-2">Embedded RAG / memoirs corpora</h3>
+              <p class="text-gray-300 mb-2">The GO path: C/Go FFI over the canonical LSM for chunked, prefix-scanned corpora that must survive process death.</p>
+              <p class="text-gray-400 text-sm">Why PugDB: tagged embed train, 100k-chunk integrity after restart, crash-loop 0 loss. Not a generic cloud KV.</p>
+            </div>
+
+            <div class="bg-gray-800/60 rounded-xl p-6 border border-gray-700/50">
+              <h3 class="text-xl font-semibold text-white mb-2">Single-server cache / session store</h3>
+              <p class="text-gray-300 mb-2">Session storage and application-level caching on one node — the soak harness we actually run.</p>
+              <p class="text-gray-400 text-sm">Why PugDB: 1.66M cache ops at 462/s with 10/10 restart anchors. YCSB 10k numbers on /bench; we do not pitch RocksDB.</p>
             </div>
 
             <div class="bg-gray-800/60 rounded-xl p-6 border border-gray-700/50">

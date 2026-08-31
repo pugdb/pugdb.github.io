@@ -3,7 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Header from '../../components/Header.astro';
 ---
 
-<BaseLayout title="How PugDB Works" description="Technical architecture and implementation details of PugDB's layered architecture">
+<BaseLayout title="How PugDB Works" description="How PugDB is layered: C/Go FFI over the canonical LSM, engines, and the v2 server that stays lab.">
   <Header />
 
   <main class="pt-20 min-h-screen bg-gray-900">
@@ -76,7 +76,7 @@ import Header from '../../components/Header.astro';
             <h3 class="text-xl font-semibold text-white mb-3">Core Components</h3>
             <ul class="text-gray-300 space-y-2 list-disc list-inside">
               <li><strong class="text-white">f4kvs-core</strong>: Core abstractions, traits, and configuration (1,199 tests, 90%+ coverage)</li>
-              <li><strong class="text-white">f4kvs-ffi</strong>: Foreign function interface bindings for multi-language support (C, C++, Python, Go, Node.js, etc.)</li>
+              <li><strong class="text-white">f4kvs-ffi</strong>: Production embed path — C ABI + Go wrappers over the canonical LSM (currently v0.2.5 / lsm v0.3.6)</li>
             </ul>
           </div>
 
